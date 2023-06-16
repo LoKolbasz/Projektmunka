@@ -1,0 +1,77 @@
+\def\checkmark{\tikz\fill[scale=0.4](0,.25) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+A bajonettcsatlakozók hosszas életútja miatt gyakran előfordul, hogy olyan új technológiák kerülnek beépítésre, amelyek nem kompatibilisek korábbi rendszerekkel. Ennek következtében meg kell határozni egy listát, amely tartalmazza a szükségesen kompatibilis eszközöket, és azok funkcionalitásait.
+
+\subsection{Nikon F bajonettes objektívek és kiegészítők}
+
+Az eredeti változat létrehozása óta rengeteg iteráción esett át a Nikon F bajonett, ezért kell választani egy referenciaverziót. Ez a dokumentum írásakor legújabb professzionális Nikon F bajonettes kamera, a Nikon D6-on is megtalálható vázbajonett. Ezen verziók következtében nem minden Nikon F bajonettes kamera kompatibilis minden más Nikon F bajonettes objektívvel, valamint nem minden funkció működik mindegyik párosítással. Ezért az alábbi kompatibilitási minimumok kerültek meghatározásra. 
+
+\subsubsection{Inkompatibilis eszközök}
+
+A különböző (elsősorban mechanikai) összeférhetetlenségek következtében az alábbi eszközök inkompatibilisek a referenciával, így az adapteren sem fognak szükségszerűen működni.
+"
+\begin{itemize}
+	\item TC-16A AF telekonverterek
+	\item Nem-AI objektívek (objektívek pre-AI expozíció csatlakozókkal)
+	\item Objektívek, amik az AU-1 fókuszáló egységet igénylik (400mm f/4.5, 600mm f/5.6, 800mm f/8, 1200mm f/11)
+    \item Fisheye (6mm f/5.6, 7.5mm f/5.6, 8mm f/8, OP 10mm f/5.6) halszemobjektívek
+    \item 2.1cm f/4 objektív
+    \item K2 toldógyűrűk
+    \item 180–600mm f/8 ED objektívek (sorozatszámok: 174041–174180)
+    \item 360–1200mm f/11 ED objektívek (sorozatszámok: 174031–174127)
+    \item 200–600mm f/9.5 objektívek (sorozatszámok: 280001–300490)
+    \item AF objektívek, amiket a F3AF fényképezőgépre készültek (AF 80mm f/2.8, AF 200mm f/3.5 ED, TC-16 AF telekonverterek)
+    \item PC 28mm f/4 objektívek (sorozatszámok: 180900 or earlier)
+    \item PC 35mm f/2.8 objektívek (sorozatszámok: 851001–906200)
+    \item PC 35mm f/3.5 objektívek (régi típus)
+    \item Reflex 1000mm f/6.3 objektívek (régi típus)
+    \item Reflex 1000mm f/11 objektívek (sorozatszámok: 142361–143000)
+    \item Reflex 2000mm f/11 objektívek (sorozatszámok: 200111–200310)
+    \item IX-NIKKOR objektívek
+\end{itemize}
+"\cite{Nikon_D6_referencia_használati_utasítás}. 
+
+\subsubsection{Kompatibilis eszközök funkciónalitása}
+
+A kompatibilis objektíveknek az adapternek köszönhetően legalább az alábbi funkciónalitásokat kell elnyernijük a Z bajonettes fényképezőgépvázakon az adapternek köszönhetően:
+
+\begin{itemize}
+    \item "Manuális fókusz minden objektívvel."\cite{Nikon_D6_referencia_használati_utasítás}
+    \item "VR a VR-el rendelkező objektíveken."\cite{Nikon_D6_referencia_használati_utasítás}
+    \item "Pont fénymérés a CPU-val rendelkező objektíveken."\cite{Nikon_D6_referencia_használati_utasítás}
+    \item "PC típusú objektíveknél a fénymérés és az automatikus expozícióbeállítás legalább "eltolás" és "döntés" nélkül működik."\cite{Nikon_D6_referencia_használati_utasítás}
+    \item "A rekeszátmérő a rekeszátmérő gyűrű nélküli (G és E típusú) objektíveken a rekeszátmérőt az azt állító segéd parancstárcsával kell állítani."\cite{Nikon_D6_referencia_használati_utasítás_aperture}
+    \item "A a rekeszátmérő gyűrűvel rendelkező objektíveken a rekeszátmérőt az objektíven található gyűrűvel kell állítani."\cite{Nikon_D6_referencia_használati_utasítás_aperture}
+    
+\end{itemize}
+
+\clearpage
+
+\begin{longtable}{|c|c|c|c|c|c|c|c|}
+	%\centering
+	%\begin{tabular}{|c|c|c|c|c|c|c|c|}
+    	    \hline
+    		\thead{Objektív vagy\\kiegészítő}  & \thead{Autófókusz}    & \multicolumn{2}{|c|}{\thead{Expozíciómód}}  & \multicolumn{3}{|c|}{\thead{Fénymérés}}   \\ 
+            &  &  P, S & A, M & \makecell{Mátrix}& \makecell{Célpont,\\Középre-\\súlyozott} & \makecell{Csúcs-\\fényre\\súlyozott} \\ \hline
+    		\makecell{G, E vagy \\D jelölésű\\AF-S AF-P\\és AF-I objektívek} & \checkmark    & \checkmark    & \checkmark  & \checkmark & \checkmark & \checkmark\\ \hline
+            \makecell{PC Nikkor\\19mmf/4E ED} & \line(1,0){15} & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\ \hline
+            \makecell{PC-E Nikkor\\sorozat} & \line(1,0){15} & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\ \hline
+            \makecell{PC Micro 85mm\\f/2.8D} & \line(1,0){15} & \line(1,0){15} & M & \checkmark & \checkmark & \checkmark \\ \hline
+            \makecell{AF-S/AF-I\\Telekonverterek} & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\ \hline
+            \makecell{Más AF Nikkor\\objektívek\\(Nikon F3AF\\kamerára készültek\\kivételével)} & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \line(1,0){15} \\ \hline
+            \makecell{AI-P Nikkor} & \line(1,0){15} & \checkmark & \checkmark & \checkmark & \checkmark & \line(1,0){15} \\ \hline
+            \makecell{AI-,\\ AI-ra módosított\\és Nikon Series E \\objektívek} & \line(1,0){15} & \line(1,0){15} & \checkmark & \checkmark & \checkmark & \line(1,0){15} \\ \hline
+            \makecell{Medical-NIKKOR\\120mm f/4} & \line(1,0){15} & \line(1,0){15} & \checkmark & \line(1,0){15} & \line(1,0){15} & \line(1,0){15} \\ \hline
+            \makecell{Reflex-NIKKOR} & \line(1,0){15} & \line(1,0){15} & \checkmark & \line(1,0){15} & \checkmark & \line(1,0){15} \\ \hline
+            \makecell{PC-NIKKOR} & \line(1,0){15} & \line(1,0){15} & \checkmark & \line(1,0){15} & \checkmark & \line(1,0){15} \\ \hline
+            \makecell{AI-típusú\\Telekonverter} & \line(1,0){15} & \line(1,0){15} & \checkmark & \checkmark & \checkmark & \line(1,0){15} \\ \hline
+            \makecell{PB-6\\csatlakoztatható\\fókuszcsúszka} & \line(1,0){15} & \line(1,0){15} & \checkmark & \line(1,0){15}& \checkmark & \line(1,0){15} \\ \hline
+            \makecell{Auto toldógyűrűk\\(PK-series 11A,\\ 12 vagy 13;\\ PN-11)} & \line(1,0){15} & \line(1,0){15} & \checkmark & \line(1,0){15}& \checkmark & \line(1,0){15} \\ \hline 
+    %\end{tabular}
+	\caption{Nikon F bajonettes objektívek szükséges funkcionalitása \cite{Nikon_D6_referencia_használati_utasítás}}
+	\label{tab:ur5}
+\end{longtable}
+
+\subsection{Nikon Z bajonettes fényképezőgépvázak}
+
+Mivel Nikon Z bajonettes fényképezőgépek csak 2018 ősze\cite{Nikon_Z_Release} óta kaphatók, ezért bár a kihozott kamerák között helyenként nagy funkcionalitásbeli különbség van, a csatlakozó még nem esett át változtatásokon. Emmiatt a dokumentum írásakor elérhető összes Nikon Z bajonettcsatlakozással rendelkező fényképezőgéppel használhatónak kell lennie az adapternek, és azokon ugyan azokat a funkcionalitásokat kell biztosítania.

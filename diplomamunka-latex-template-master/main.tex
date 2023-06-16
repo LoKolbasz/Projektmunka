@@ -1,0 +1,87 @@
+% template file include
+\input{template}
+
+
+
+
+\begin{document}
+
+
+\pagenumbering{gobble}
+
+% ELŐLAPOK: borító, feladatlap, nyilatkozat, konzultációs napló
+%\includepdf[pages=-]{includes/borito.pdf}
+%\includepdf[pages=-]{includes/feladatlap.pdf}
+%\includepdf[pages=-]{includes/nyilatkozat.pdf}
+%\includepdf[pages=-]{includes/konzultacios_naplo.pdf}
+
+
+\newpage
+\tableofcontents
+\newpage
+
+% csak a tartalomjegyzék után kezdődik a számozás
+\pagenumbering{arabic}
+
+
+% -----------------------------------------------------
+
+% ITT KELL HOZZÁADNI A FEJEZETEKET, CÍM NAGYBETŰVEL:
+
+\clearpage
+\section{BEVEZETÉS}
+\input{chapters/1_Bevezetes}
+\clearpage
+\section{KOMPATIBILITÁS}
+\input{chapters/2_Kompatibilitás}
+\clearpage
+\section{NIKON F BAJONETT}
+\input{chapters/3_Nikon_F_Bajonett}
+\clearpage
+\section{NIKON Z BAJONETT}
+\input{chapters/4_Nikon_Z_Bajonett}
+\clearpage
+\section{ELEEKTRONIKUS KONTAKTOK SZEREPÉNEK MEGÁLLAPÍTÁSA}
+\input{chapters/5_Elektronikus_Kontaktok_Szerepének_Megállapítása}
+\clearpage
+\section{IMPLEMENTÁCIÓ}
+\input{chapters/6_Implementáció}
+
+%\clearpage
+%\section{PÉLDA FEJEZET}
+%\input{chapters/10_Pelda_Fejezet}
+
+
+
+
+
+
+
+
+
+
+% ------------------------------------------------------
+
+% JEGYZÉKEK, INNEN KI LEHET KOMMENTEZNI AMELYIK ESETLEG NEM KELL (de ha van ábra/táblázat akkor kötelező, irodalomjegyzék kötelező, rövidítések opcionális)
+
+\clearpage
+\section{IRODALOMJEGYZÉK}
+\printbibliography[heading=none]
+
+\clearpage
+\renewcommand{\listfigurename}{ÁBRAJEGYZÉK}
+\listoffigures
+
+\clearpage
+\renewcommand{\listtablename}{TÁBLAJEGYZÉK}
+\listoftables
+
+\clearpage
+\section{RÖVIDÍTÉSEK}
+\input{acronyms}
+
+
+
+
+
+\end{document}

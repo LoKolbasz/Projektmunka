@@ -26,6 +26,12 @@ Ebben az esetben az egyik analóg bemenetre rákötjük az analóg interfészt, 
 Ilyenkor a digitális bemenet egy digitális bemeneti tűre van kötve, az analóg kimenet pedig egy PWM tűn fog megjelenni. Az 5.2.2-es szekcióban ismertetett eljárás alapján kiválasztjuk a függvényt, majd annak felhasználásával létrehozunk egy olyan modulált jelet a PWM csatornán, amely azt a függvényt reprezentálja. Ezt a jelet küldjük a kimeneti csatlakozásra.
 \paragraph{Analóg-Analóg transzformáció}
 A bemenet ilyenkor az egyik analóg bemeneti tűre van rákötve, a kimenet pedig egy PWM tűre. Az analóg bemenetből az 5.2.2-es szekcióban ismertetett módszerek segítségével kell előállítani a kimeneti függvényt, majd azt a \textbf{Digitális-Analóg transzformáció} bekezdésben ismertetett módon kell a PWM kimeneten megjelentetni. Ahol a kettő jel között matematikai, és nem logikai kapcsolat van, ott az alábbiakban ismertetett megoldás jobb eredményeket adhat.
+\paragraph{Analog-Digital Converter - ADC (Analóg-Digitális Konverter)}
+A mikrokontroller analóg lábain a beolvasásra kerülő jeleket a rajta található ATmega2560 processzor\cite{arduino_docs} Analóg-Digitális konvertere 10-bit es egész számokká alakítja\cite{ATmega_processor_datasheet}. Az így kapott szám azt mutatja, hogy a beolvasott érték az analóg lábak határértékei (0V és 5V) között hol helyezkedik el. Ebből feszültséget a kövekező formulával számolhatunk:
+\begin{align}
+    U(x) = \frac{5Vx}{1023}
+\end{align}
+\small (1023 a legnagyobb 10-bit-en reprezentálható érték)
 
 \paragraph{Áramforrás}
 Áramforrásként a  mikrokontroller dokumentációjában említett 9V-os akkumulátor használatos a prototípus fejlesztésekor. Amennyiben a váz képes az általa kibocsájtott, kiegészítőknek és objektíveknek szánt áramellátással, annak transzformálásával, vagy anélkül a mikrokontrollernek 7-12V-os\cite{arduino_aram} áramellátást biztosítani, akkor a végső implementáció használja azt. Ezzel el lehet kerülni az akkumulátor rendszeres cseréjét. A 7-12V-os áramot ilyenkor rá kell kötni a mikrokontroller VIN tűjére. Ennél ügyelni kell arra, hogy nem rendelkezik fordított polaritás védelemmel, ezért a bekötést megfelelően kell elvégezni.\cite{arduino_docs} Amennyiben a feszültség stabil 5V, a feszültség az elektromos áram az eszköz számára megfelel, így egyenesen az 5V-os tűkre köthető. Ekkor, a bemeneti áramtól függően, vagy rá kell kapcsolni az objektív áramellátását a váz által nyújtott forrásra, vagy a mikrokontroller PWM csatlakozásait használva kell azt árammal ellátni.

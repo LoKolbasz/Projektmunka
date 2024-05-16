@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 Bár az elektronikusan közölt információk típusa (pl.: rekeszátmérő) nagyban ismert, hogy pontosan melyik elektronikus kontakt, pontosan milyen módon közli az információt, ismeretlen. Így mind a Z-bajonett mind az F-bajonett elektronikus kommunikációja egy fekete dobozhoz hasonlítható. Ennek a rendszernek a feltárására célszerű megközelítés visszafejtéses módszereket alkalmazni. "A visszafejtés itt úgy van definiálva, mint egy bizonyos hardverhez készült specifikációk létrehozása valaki olyan által, aki nem tartozik az eredeti dizájnerek közé, elsősorban egy egyed vagy egyedek gyűjteményének analizálására vagy dimienziózására alapozva."\cite{Reverse_engineering}
-=======
 \subsection{Elemek azonosítása}
 Első lépésként a konkrét kontaktok által szállított információk jelentéseit kell meghatározni. Ehhez először rögzítenünk kell a kontaktok különböző bemenetére adott reakcióját. Így miközben egy objektív csatlakoztatva van, méréseket végzünk a kapcsolaton. Ezt az alábbi (\ref{fig:jelparosito_UML}) diagrammon látható rendszerrel valósíthatjuk meg. Itt a jel leírásánál fel kell tüntetni az áramerősséget és a feszültséget is, mivel mindkettő tartalmazhat szükséges információt.
 \begin{figure}[H]
@@ -49,11 +47,12 @@ A maximális frekvencia meghatározásához előbb a mintavételező maximális 
 Egy beállítással több mérést is kell végezni, így csökkentve az esélyét annak, hogy egy vagy több meghibásodásnak köszönhetően rossz konklúzióra jussunk. Az ideális tesztek számát a méréseket végző türelme, és a kapott értékek közti különbségek alapján lehet meghatározni.
 
 \subsubsection{Adatok rendezése}
-Hogy könnyebben értelmezhetőek legyenek az összegyűjtött adatok, azokat szűrni és egyesíteni kell.
-\paragraph{Szűrés}
-A szórást úgy végezzük el, hogy egy adott $t$ helynek $epsilon$ környezetében vett adatoknak azt az intervallumát tartjuk meg, amely tartalmazza azoknak a 99\%-át. Ezt úgy tehetjük meg, hogy az adatokat növekvő sorrendbe rendezzük, kiszámoljuk a $i = frac{AdatokDarabszáma}{2}*0.99$ lefelé kerekített képlettel kiszámoljuk a mediántól jobbra és balra lévő megtartandó adatok darabszámát. A rendezett, szükséges elemek indexei ilyenkor a $[n-i,n+i]$ intervallumon belülre esnek, ahol $n$ a medián indexe, és $i$ a fenti képlettel kiszámított környezet lefele kerekítve. Amennyiben egy teszt tartalmaz ezen az intervallumon kívül eső adatot, akkor az érvénytelennek minősül, és az adatai nem használhatóak a következő lépésben.
-\paragraph{Összefésülés}
-Mivel az adatrögzítés a minden feljegyzés esetében, a beállításváltozáshoz képest ugyanakkor kezdődik és ér véget, valamint a mintavételezési gyakoriság megegyezik, ezért az egy beállításhoz tartozó adatokat a mérés kezdése óta eltelt idő alapján csoportosíthatjuk. A fenti szűrés elvégzése után a több mintából egyet alakítunk ki úgy, hogy egy ilyen kategóriába tartozó adatoknak az átlagát vesszük, és az így keletkezett feljegyzésből állítjuk vissza az eredeti függvényt.
+Hogy könnyebben értelmezhetőek legyenek az összegyűjtött adatok, azokat szűrni és egyesíteni kell. Az alábbi két folyamat elsősorban az összegyűjtött adatok elemzésére szolgál, nem használatosak az adapteren. Ez a módszer nem növeli annyival az adatok pontosságát, hogy az adapteren megérje alkalmazni.
+\paragraph{Hibás adatok szűrése statisztikai módszerekkel} A kapott adatokból létrehozunk egy 99\%-os konfidenciaintervallumot, és az azon kívül eső elemeket eltávolítjuk a minták közül úgy, hogy a helyükre a kettő szomszédos érték étlagát írjuk be. Ezáltal a mintavételezési sűrűség nem változik.
+\paragraph{Hibás adatok szűrése zajforrás megszüntetésével} Maga a mérőeszköz is képes zajt generálni. Ennek érdekében használjuk a \ref{ADC_noise} kifelytett eljárást.
+\paragraph{Zaj szűrése a jel dekompozíciójával} Bizonyos frekvenciákat eltávolítva tisztább, könnyebben elemezhető jelet kapunk. Ehhez egy metódus a \ref{OMP} szekcióban kifejtett módszer.
+\paragraph{Összefésülés több mérés esetén}
+Mivel az adatrögzítés a minden feljegyzés esetében, a beállításváltozáshoz képest ugyanakkor kezdődik és ér véget, valamint a mintavételezési gyakoriság megegyezik, ezért az egy beállításhoz tartozó adatokat a mérés kezdése óta eltelt idő alapján csoportosíthatjuk. A fenti szűrés elvégzése után a több mintából egyet alakítunk ki úgy, hogy egy ilyen kategóriába tartozó adatoknak az átlagát vesszük, és az így keletkezett feljegyzésből állítjuk vissza az eredeti függvényt. Ez az adapteren nem értelmezhető, mivel csak egy adatfolyammal tud dolgozni, a jelenlegi mérések alapján.
 % ide le kellene írni, hogy hogyan kell visszaállítani.
 
 \subsection{Jelek átalakítása}

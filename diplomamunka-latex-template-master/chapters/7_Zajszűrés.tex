@@ -1,3 +1,6 @@
+"A zaj egy kéretlen jelek egy típusa.[...] Az adatgyűjtési folyamat során a zaj a jelekben perzisztens.[...] 
+Még az analóg-digitális átalakítás is zajt ad az átalakított jelhez. 
+A konverter minőségétől és a jel felhasználásától függően ennek jalantős hatással lehet."\cite{noise_reduction_omp}
 Annak érdekében, hogy egyszerűbb legyen egyezéseket találni az analóg bemenetek, és az azokhoz eltárolt minták között.
 Ezek a szűrők az elemzési fázisban is jól használhatóak, így könnyebb automatizált eszközökkel mintákat találni a jelekben.
 
@@ -10,3 +13,98 @@ Amikor az ADCRC van kiválasztva órajel forrásként, az ADC hardver vár még 
 Ez megengedi, hogy a SLEEP instrukció végre legyen hajtva, amely csökkentheti a rendszerzajt a konverziós folyamat során."\cite{ATmega_processor_datasheet}
 
 \subsection{Zajcsökkentés DCT és DSC szótárakon alapú OMP algoritmussal}
+
+Ez a módszer a fehér nagyjából 34dB-el képes csökkenteni, miközben visszaállítja torzításmentesen az eredeti jelet.\cite{noise_reduction_omp}
+Az eljárás "a feldolgozott jelből diszkrét koszinus transzformációval és diszkrét szinusz transzformációval létrehozza annak a ritka reprezentációját. Az ortogonális egyezésre törekvés algoritmusa rekonstrukciós algoritmusként van használva, hogy a zaj nélküli jel bázisait megtaláljuk [...]."\cite{noise_reduction_omp}
+A ritka reprezentáció a következő lineáris kombinációval képes a jelet reprezentálni:
+\[x[n]=\sum_{m=1}^{M}D[n,m]\alpha[m]+r[n]\]
+ahol $x[n]$ egy $x \in \mathbb{R}^{N \times 1}$ jel n-edik mintája, $D[n,m]$ az n-edik mintája az m-edik oszlopnak (atom) egy $D \in \mathbb{R}^{N \times M}$, $a[m]$ az m-edik együtthatója egy $a \in \mathbb{R}^{M \times 1}$ritka vektornak (van nem 0 eleme) és $r[n]$ az n-edik mintája a visszamaradó $r \in \mathbb{R}^{N \times 1}$ reprezentációnak.\cite{noise_reduction_omp}
+
+\paragraph*{OMP(ortogonális egyezésre törekvés) algoritmus}
+"Egy mohó algoritmus, amely használható jelvisszaállításra hiányis együtthatókból tömörített érzékelésnél."\cite{noise_reduction_omp} Esetünkben a jel dekompozíciójára használjuk.
+
+% \begin{algorithm}
+%     \caption{OMP}\label{alg:cap}
+%     \begin{algorithmic}
+%         \Require
+%         \Ensure
+%         \While {$\neg STOP\_CRITERION$}
+%             \State $j++$
+%             \State $i = \underset{m=\{1,...,M\}}{argmax}| \langle r, D \rangle |$ \Comment{A maximum abszolút értékű belső szorzata a \newline visszamaradó jelnek ($r$) és a $D$ szótár összes $d_m$ atomjának.} % https://mathworld.wolfram.com/AngleBracket.html
+%             \State $U_{j}=[U_{j - 1} \cup i]$
+%             \State $D_{j}=[D_{j - 1} | d_{i}]$
+%            \State $\underset{\alpha}{min} \norm{x - D_{j}\alpha_{j}}_{2}^{2}$
+%           \State $r_{j} = x - \tilde{D}_{j}\alpha{j}$ \Comment{$\alpha = \tilde{D}_j^{\dagger}x$ ahol $\dagger$ Moore–Penrose pseudo-inverz mátrixot jelez}
+%        \EndWhile
+%        %\Return \alpha_{j}, U_{j}, r_{j}
+%    \end{algorithmic}
+%\end{algorithm}\cite{noise_reduction_omp}
+% Ahol: 
+% $x$: dekompozálandó jel
+% $D$: szótár, amely regisztrálja a kiválasztott atomot
+% $STOP_CONDITION$: Leállási feltétel
+% $r$: Visszamaradó jel.(Inicializálásnál ($r_0$) az eredeti jel, ekkor $D_0$ és $U_0$ is üres)
+% $U$: index vektor, amely a kiválasztott atom indexét regisztrálja.
+% $j$: Elleniterátor. (Kiinduláskor 0)
+% $\tilde{D}$: Atomok részmátrixa.
+A ritka reprezentáció megtartása érdekében $M > N$ nek igaznak kell lennie és a szótárban legalább $N + 1$ atomank kell lennie.
+A diszkrét fourier függvény complex része elkerülése érdekében a DCT és a DST algoritmusokat használjuk. Ezek eredményéiből jön létre a szótár: \[D = [C|S]\]
+A koszinuszok a DCT-II transformáció alapján: \[C[n, k] = \beta_c \cos[\frac{\pi k (2n + 1)}{2N}]\]
+A szinuszok a DST-II transformáció alapján: \[C[n, k] = \beta_s \sin[\frac{\pi (k + 1) (2n + 1)}{2N}]\]
+Ahol 
+\begin{equation}
+    \beta_c =
+    \begin{cases}
+        \sqrt{\frac{1}{N}}, n = 0\\
+        \sqrt{\frac{2}{N}}, 1 \leq n \leq N - 1
+    \end{cases}
+\end{equation}
+\begin{equation}
+    \beta_s = 
+    \begin{cases}
+        \sqrt{\frac{2}{N}}, 0 \leq n \leq N - 2\\
+        \sqrt{\frac{1}{N}}, n = N - 1
+    \end{cases}
+\end{equation}
+$n = {0, 1,..., N - 1}$, $k = {0, 1,..., N - 1}$ és $N$ a jelminták száma. Ezek alapján a ritka reprezentáció:
+\begin{equation}
+    x[n] = \sum_{p=1}^N C[n,p]\alpha_c[p] + \sum_{q=1}^N S[n,q]\alpha_s[q] + r[n]
+\end{equation}
+Ahol $\alpha_c \in \mathbb{R}^{N \times 1}$ a koszinuszok, $\alpha_s \mathbb{R}^{N \times 1}$ pedig a szinuszok együttahtói amik a $C \in \mathbb{R}^{N \times N}$ és a $S \in \mathbb{R}^{N \times N}$ mátrixokhoz tartoznak. A szótárban $2N$ atom lesz.\cite{noise_reduction_omp}
+\\
+\begin{algorithm}
+    \caption{OMP zajcsökkentés}\label{alg:cap}
+    \begin{algorithmic}
+        \Require $C, S, x, STOP\_CRITERION$
+        \Ensure $r_0 = x, D_0 = {}, j = 0$
+        \While {$\neg STOP\_CRITERION$}
+            \State $j++$
+            \State $i = \underset{m=\{1,...,M\}}{argmax}(\sqrt{\langle r_{j-1}, C_m \rangle^2 + \langle r_{j-1}, S_m \rangle^2})$ \Comment{$\langle \bullet , \bullet \rangle$ skalárszorzat} % https://mathworld.wolfram.com/AngleBracket.html
+            \State $U_{j}=[U_{j - 1} \cup {i, N + i}]$
+            \State $D_{j}=[D_{j - 1} | {C_{i}, S_i}]$
+            \State $\alpha = \tilde{D}_j^{\dagger}x$ ahol $\dagger$
+           \State $\underset{\alpha}{min} \norm{x - D_{j}\alpha_{j}}_{2}^{2}$
+          \State $r_{j} = x - D_{j}\alpha{j}$
+       \EndWhile
+       \State \Return $\alpha_{j}, U_{j}, r_{j}$
+   \end{algorithmic} \cite{noise_reduction_omp} 
+\end{algorithm}
+\\
+Ahol: \\
+$x$: dekompozálandó jel. \\
+$S$: Szinusz komponensek. \\
+$C$: Coszinusz komponensek. \\
+$D$: Szótár, amely a $[C|S]$ mátrixból áll. C és S elemeknek párban kell lenniük (ugyan akkora az elemszámuk).\\
+$STOP_CONDITION$: Leállási feltétel. \\
+$r_j$: Visszamaradó jel a j-edik iterációnál.(Inicializálásnál ($r_0$) az eredeti jel, ekkor $D_0$ és $U_0$ is üres). \\
+$U_j$: A j-edik iterációnál kiválasztott atom indexek halmaza. \\
+$j$: Elleniterátor. (Kiinduláskor 0) \\
+$\tilde{D}$: Atomok részmátrixa. \\
+
+\paragraph{Megállítási feltétel}
+A megállítási feltételhez, egy a szimulált lehűtésnél is alkalmazható módszert használunk.
+Ennek alapján akkor állítjuk le az iterációt, ha a az algoritmus energiaszintje elért egy minimumot. Ezt az OMP esetében az alábbiak szerint becsüljük meg:
+\begin{equation}
+    E_m = \sqrt{\frac{\alpha_m^2 + \alpha_{N + m}^2}{2N}}
+\end{equation}
+Az $E_min$ értéke fehér zaj esetén meghatározható annak a konstans teljesítményspektrum sűrűsége miatt. Viszont a módszer miatt az energiaszint elérheti a minimumot, de a megoldás még hullámzik. Ennek elkerülése érdekében, csak akkor érjen véget a ciklus, ha legalább már kettő egymás utáni megoldás energiaszintje a határérték alatt van.\cite{noise_reduction_omp}

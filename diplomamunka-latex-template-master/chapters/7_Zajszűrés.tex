@@ -8,3 +8,5 @@ Az Arduino Mega 2560 az ADC pontosságának növeléséhez nyújt egy "ADC Noise
 "Az ADC képes Alvó módban üzemelni, de ehhez az ADC-nek a dedikált ADCRC-r kell használnija órajel forrásként. 
 Amikor az ADCRC van kiválasztva órajel forrásként, az ADC hardver vár még egy instrukciós ciklust ($T_{CY}$) mielött megkezdi a konverziót. 
 Ez megengedi, hogy a SLEEP instrukció végre legyen hajtva, amely csökkentheti a rendszerzajt a konverziós folyamat során."\cite{ATmega_processor_datasheet}
+
+\subsection{Zajcsökkentés DCT és DSC szótárakon alapú OMP algoritmussal}

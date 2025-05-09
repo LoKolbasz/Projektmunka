@@ -1,0 +1,116 @@
+\subsection{Felhasználási területek}
+Naplózás szükséges az eszköz által érzékelt adatok gyűjtésére a protokoll felderítési fázisban.
+Emellett segíthet a különböző hibakeresési folyamatokban, ha a program jelezni tudja, hogy éppen mit csinál, milyen hibákba ütközött.
+
+\subsection{Naplózó kimenet: USART}
+Az Arduino nem rendelkezik képernyővel. Látható kimenetként egyedül beépített LEDekkel rendelkezik.
+Lehetséges az eszközre egy LED kijelzőt helyezni, viszont egyszerűbb, és célszerűbb a beépített soros (USB) porton személyi számítógépre (PC) küldeni az adatokat.
+A HAL-ban megtalálható USART vezérlővel, és a uFMT formázóval erre a kimenetre küldött adatok a megfelelő, olvasható formában fognak megérkezni.
+
+\subsubsection{uFMT}
+Az ufmt, egy (6-40-szer) kisebb, (2-9-szer) gyorsabb és pánik mentes alternatívája az alapértelmezett formázónak.\cite{ufmt_rust}
+Ezek a tulajdonságai nagyon kedvezővé teszik, az erőforrásokban korlátolt (256KB Flash, 4KB EEPROM, 8KB RAM) ATmega2560 processzorral[cite] történő használatra.
+Azonban a "Log" interfész metódusainak argumentumai nem támogatják ezt a formázót, ezért azok a metaadatok nem formázhatóak ez által.
+Ennek az az eredménye, hogy a méret beli előnyök kevésbé jelentősek, hiszen mindenképpen mellékelni kell az alapértelmezett formázót.
+A kiküldendő üzenet végső formázását azonban már átveszi ez a modul, ahol kihasználásra kerül az alacsonyabb futási idő, a dolgozat specifikus metaadat (rögzítés ideje), a standard formázóval már formázott metaadat és az üzenet egymáshoz illesztésekor.
+
+\subsection{Metaadat}
+Ahhoz, hogy az üzenet kontextusáról részletes információt tartalmazzon egy üzenet, az üzenethez automatikusan hozzáadhatóak különböző meteadatok, mint például, hívási hely, fontossági szint (hiba, info, stb.).
+Az ilyen helyzetek kezelésére jól használható a "log" Cargo csomag, amelyben található a Log interfész. 
+Ennek az interfésznek az implementációjával használhatóvá válnak (szintén a csomag által nyújtott) naplózó makrók.
+Ezek automatikusan közlik a Log implementációval a hívás kontextusát, amit az implementáció szükséges szerint az üzenethez ad.
+A \ref{ora}-as szekcióhoz hasonlóan ez a megvalósítás is egy külön csomagként használható, moduláris.
+
+\subsection{Adatszerializálás}
+A tűkön beolvasott adatokat a személyi számítógépre küldés ellőtt célszerű szerializálni, tehát egy standard formátumra formázni, annal érdekében, hogy az adatok biztosan kompatibilis, helyesen beolvasható formában legyenek.
+Ehhez egy széles körben támogatott formátum a JSON (JavaScript Object Notation).
+Ezt a formátumot a legjelentősebb adatfeldolgozáshoz használt programozási nyelvek (mint például a Python) támogatják.
+
+\subsubsection{Serde}
+%Serde is a framework for serializing and deserializing Rust data structures efficiently and generically.
+"Serde egy keretrendszer Rust adatstruktúrák hatékony és általános szerializálására és deszerializálására"\cite{serde_rust}.
+Ez a keretrendszer több, a dolgozat szempontjából szükségtelen, formátumot is támogat, szükségtelen funkciókkal rendelkezik.
+Ezek a programrészek azonban fölöslegesen beleforfulnak a végső futtatható állományba.
+Ennek következménye az, hogy a linkelés sikertelen lesz, és a futtatható állomány létre sem jön.
+
+\paragraph{Serde-json}
+A Serde ezen verziója csak a JSON formátumban lévő adatok szerializációját, deszerializációját támogatja\cite{serde_json_rust}.
+Ennek köszönhetően jelentősen csökken a kimeneti bináris mérete, azonban nem eléggé. További hátránya, hogy a standard könyvtár funkcionalitások kikapcsolása után is szükség van egy dinamikus memóriafoglalóra\cite{serde_json_rust}, amely tovább növeli a program méretét, és nem kerül máshol felhasználásra.
+Kevesebb helyet foglal, a "serde-json" csomag, mivel az csak a json modult tartalmazza.
+Azonban ez továbbra is szükségtelenül tartalmazza a memóriafoglaló modult, amely a program más területein nem kerül felhasználására.
+%This version of serde-json is aimed at applications that run on resource constrained devices.
+\paragraph{Serde-json-core} "A serde-json ezen verziója azokat az applikációkat célozza, amelyek erőforrás korlátolt eszközökön futnak. [...]
+%(De)serialization doesn’t require memory allocations
+(De)szerializáció nem igényel memóriafoglalást."\cite{serde_json_core_rust}
+Ez a serde legminimálisabb verziója.
+Hátránya az, hogy továbbá is tartalmazza a deszerializáláshoz szükséges kódot, ami nem kerül használatra, hiszen a program nem vár JSON formátumban bemenetet.
+Ilyen formátumban csak kimenet keletkezik.
+Tehát nem adatok JSON-formátumba kerülnek, de nem jönnek létre adatok JSON-formátumból.
+Ez további fölöslegesen a programba fordított kódot tartalmaz, és a linkelő továbbá sem jár sikerrel.
+
+\subsubsection{Egyedi szerializáló}
+Mivel az említett szerializáló csomagok egyike sem eredményezett futtatható állományt, ezért a legminimálisabb megoldás hasnálata vált célszerűvé.
+\paragraph{Írás egyenesen USART kimenetre}
+A cél egyszerű adatstruktúrák JSON-formátumban történő kiírása a soros kimenetre USART hasnálatával.
+Mivel a HAL-ba beépített USART megvalósítás támogatja a uWrite interfészt, ezért a ufmt formázóval egyenesen a kimenetre lehet írni a karaktereket, ezzel minimalizálva a memóriahasználatot.
+Ezt az írót a szerializáló függvény függőségi injekcióval egy módosítható referencia függvényparaméterként veszi át, hogy a kimenet továbbra is használható legyen a hívó által, és írni is lehessen a kimenetre.
+\paragraph{JSON formátum referencia}
+A kompatibilitás megőrzése érdekében elengedhetetlen betartani a JSON nyílt szabvány előírásait.
+A formázás alapjául az ECMA-404 szabvány\cite{json_standard} szolgál.
+\begin{figure}[H]
+    \center
+    \begin{tabular}{@{} p{0.45\textwidth} @{\hspace{0.1\textwidth}} p{0.45\textwidth} @{}}
+    \multicolumn{1}{l}{\textbf{Rust Stuktúra}} & \multicolumn{1}{r}{\textbf{JSON Szerializált}} \\
+    \hline
+    \ttfamily\begin{tabular}[t]{l}
+    struct Szemely \{ \\
+    \quad nev: String, \\
+    \quad eletkor: u8, \\
+    \quad aktiv: bool \\
+    \} 
+    \end{tabular}
+    &
+    \ttfamily\begin{tabular}[t]{l}
+    \{ \\
+    \quad "nev": "Kovács János", \\
+    \quad "eletkor": 45, \\
+    \quad "aktiv": true \\
+    \}
+    \end{tabular}
+    \end{tabular}
+    \cite{json_standard}
+    \caption{példa: egyszerű struktúra szerializálása}
+    \end{figure}
+\paragraph{Korlátok}
+
+Ennek a funkciónak a felhasználása korlátozva van a feljegyző modulra, mivel (Serde-hez hasonló kódgeneráció hiányában) minden új adatstruktúra külön implementációt igényel.
+A Serde-vel ellentétben nem tartalmaz általános megoldásokat.
+
+\subsection{JSON adatok küldése kérésre}
+Az mérőeszköz indításától folyamatosan érkező adatok nagyban megnehezítik azok kezelését.
+Ennek elkerülése érdekében alkalmazásra kerül egy kapcsoló, amivel az adatküldés elindítható és szüneteltethető is.
+Minden egyes rögzítési periódus adatai saját JSON tömbben helyezkednek el úgy, hogy tömbben nagyobb indexszel rendelkező elem került később rögzítésre.
+Ennek köszönhetően a feldolgozás során könnyen elhatárolhatóak az adatok.
+A rögzítés során minden egyes mért periódus során mért tevékenység leírása (pl.: mit hajtott végre az objektív) külön dokumentumban, kerül szintén időrendi sorrendben tárolásra.
+Ezáltal korreálhatóvá válnak a mért adatok a vizsgált tevékenységgel.
+
+\subsubsection{Gombnyomás érzékelése}
+A gomb egy külső nyomtatott áramkör (NYÁK) próbapanel használatával kerül bekötésre.
+Erre azért van szükség, mert az Arduino egyetlen beépített gombja a program teljes újraindítására szolgál.
+\begin{figure}[H]
+    \label{fig: gombkotes}
+    ERROR: Missing figure
+    \caption{Gomb bekötése}
+\end{figure}
+A gomb lenyomását a program az általános célú be-, kimeneti (GPIO) tűn érzékeli.
+Ha a beolvasott érték "logikai alacsony", akkor a gomb le van nyomva, ha az érték "logikai magas", akkor a gomb nincs lenyomva.
+Hibalehetőségek csökkentése céljából az adatküldés a gomb lenyomása utáni felengédéskor indul el,
+újbóli lenyomáskor az adatküldés leáll, és felengedés után a következő adatküldést elindító lenyomás, felengedés kombinációra vár.
+% Maybe add description of spin lock here
+\paragraph{Felhúzú ellenállás}
+A bemeneti láb, lebegő bemenet esetén nagyon érzékeny.
+Emiatt kis, a környezetből származó feszültség, zaj is képes megváltoztatni a beolvasott értéket azt megbízhatatlanná téve.
+Egy felhúzó ellenállás használatával bemeneti logikai jel hiányában a lábon az MCU logikai magas értéket olvas, bemenet esetében pedig logikai alacsonyt, ezáltal elkerüli zajból származó bizonytalanságot.
+"A bemeneteken chipen belül egy-egy kb. 20..80 $k\Omega$ felhúzó-ellenállás van beépítve,
+melyek ki/bekapcsolhatóak."\cite{evans2011arduino}
+A bemeneti lábat a HAL megfelelő metódusával egy felhúzó elleneállással működő, digitális bemenetté alakítva kerülnek ezek a beépített  ellenállások használatra, elkerülve extra elektronika hozzáadását.

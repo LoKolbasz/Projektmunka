@@ -1,0 +1,75 @@
+\label{ora}
+
+A Hardver Absztakciós Rétegbe (HAL) nincs beépítve \[reference here\], ezért a pontos időzítések számításához egy óra manuális implementálása szükséges.
+Ehhez egy számláló regiszter használatos. A számláló regiszter minden óraciklusban növeli a benne tárolt értéket, így az óra frekvenciájának ismeretében a számláló indítása óta eltelt idő kiszámítható a következő formulával: \[f_{clock} \cdot c\]
+Behelyettesítve:\[\frac{c}{t}\]
+Ahol:
+\captionsetup[table]{list=no}
+\begin{table}[H]
+    \begin{tabular}{ll}
+    $t$:    &periódusidő \\
+    $c$:    &számláló
+    \end{tabular}
+\end{table}	
+\captionsetup[table]{list=yes}
+
+\subsection{Újrahasználhatóság}
+
+Annak érdekében, hogy az órát később is fel lehessen használni (függőségi injekcióval), célszerű egy interfész (trait) implementálása. Egy ilyet szolgáltat az "embedded time" csomag, ami a korábban említett előny mellett különböző funkcionalitásokkal is bővíti a programot, mint például mértékegység átváltások, időzítők, időhöz tartozó adattípusok.
+
+\subsection{Számláló regiszter}
+
+Az eszköz több számláló regisztert is tartalmaz. Ezek között a legjelentősebb különbség, a számláló bitmélysége.
+A szakdolgozat során a 8 bites TC0 regiszter volt használva, annak érdekében, hogy a 16 bites regiszter szabad maradjon egy esetleges fontosabb funkció betöltésére.
+
+\subsection{Túlcsordulás}
+
+Annak érdekében, hogy használható hosszúságú időintervallumok tárolhatóvá váljanak, szükséges egy túlcsordulásszámláló használata.
+Ennek bitmélysége befolyásolja azt, hogy mikori lesz az indítás után legkésőbbi pontosan olvasható időpont.
+A jelenlegi idő a túlcsordulás számlálóval a következő:
+\begin{equation}
+    \frac{c_{reg} + c_{of} \cdot c_{reg\_max}}{t}
+    \label{eq:ido_szamlalokbol}
+\end{equation}
+Ahol:
+\captionsetup[table]{list=no}
+\begin{table}[H]
+    \begin{tabular}{ll}
+    $c_{reg}$:&A számláló regiszterben tárolt érték \\
+    $c_{of}$:&Túlcsordulás számláló \\
+    $c_{reg\_max}$:&A számláló regiszter legnagyobb lehetséges értéke \\
+    \end{tabular}
+\end{table}
+\captionsetup[table]{list=yes}
+A túlcsordulásszámláló inkrementálása a processzor megszakításainak használatával történik.
+A használt megszakítás az óra paraméterei alapján kerül kiválasztásra.
+
+\subsection{Számláló regiszter konfiguráció}
+
+\subsubsection*{Skálázó} Órajelenként mennyivel növelje a számlálót.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|lr|}
+    \toprule
+    \multicolumn{2}{|c|}{Lehetséges értékek}                              \\ \midrule
+    \multicolumn{1}{|l|}{0}    & direkt / nincs skálázás                  \\ \midrule
+    \multicolumn{1}{|l|}{8}    & \multirow{4}{*}{skálázás adott értékkel} \\ \cmidrule(r){1-1}
+    \multicolumn{1}{|l|}{64}   &                                          \\ \cmidrule(r){1-1}
+    \multicolumn{1}{|l|}{256}  &                                          \\ \cmidrule(r){1-1}
+    \multicolumn{1}{|l|}{1024} &                                          \\ \bottomrule
+    \end{tabular}
+    \caption{Skálázó lehetséges értékei}
+    \label{tab:skalazo_ertekek}
+\end{table}
+
+\subsubsection*{Túlcsordulási érték} A számláló maximális értéke. Ha a számláló eléri ezt a számot, az minősül túlcsordulásnak.
+Lehetséges értékek:
+\captionsetup[table]{list=no}
+\begin{table}[H]
+\begin{tabularx}{\textwidth}{@{}lL@{}}
+    255       & Normál mód: Regiszter túlcsordulás megszakítás. A regiszter túlcsordulását használja fel a megszakítás hívásához.     \\
+    < 255     & CTC mód: Komparátor megszakítás. Amikor a regiszter értéke eléri ezt a számot, akkor hívódik meg a megszakítás.          \\
+    \end{tabularx}
+\end{table}
+\captionsetup[table]{list=yes}
+Mivel az óra frekvenciája konstans, ezért a megszaskítások gyakorisága ennek a kettő változónak használatával állítható az óra példányosításánál.

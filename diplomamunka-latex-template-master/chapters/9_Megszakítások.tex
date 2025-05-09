@@ -1,0 +1,20 @@
+\[insert def here\]
+\subsection{Megszakítások engedélyezése}
+% avr_device::interrupt::enable
+Megszakítások használatához először azok bekapcsolása szükséges. Ha a megszakítások nincsenek bekapcsolva, akkor a megszakításokhoz rendelt függvények nem kerülnek meghívásra.
+
+\subsection{Egyedi megszakítás függvény}
+A megszakításokhoz csak olyan globális függvények rendelhetőek, amelyeknek nincsenek bemeneteik. Emiatt, minden a függvény lefutásához szükséges külső változónak globálisnak kell lennie.
+Így a függvény bemenetként fogadhat változókat és módosíthatja is azokat függvényargumentumok nélkül. Ennek a technikának a használatával válik lehetségessé többek között az óra túlcsordulás számlálójának megvalósítása is az \ref{ora}-as számú szekcióban. 
+
+\subsection{Konkurencia}
+Az MCU csak egy maggal rendelkezik \cite{ATmega_processor_datasheet}, ezért a programok párhuzamos végrehajtása nem lehetséges.
+Azonban a programrészletek konkurens végrehajtása továbbra is lehetséges akkor, ha egy (vagy több) megszakítás meghívódik.
+Ilyenkor a fő program végrehajtása fel lest függesztve, és a megszakítások a prioritási sorrendjüknek megfelelően végrehajtásra kerülnek \cite{ATmega_processor_datasheet}.
+Emiatt a program szekvencialitása nem garantálható, és egyes adatstruktúrák nemkívánatos sorrendben történő módosítása hibás programhoz vezethet.
+
+\subsubsection{Kölcsönös kizárás}
+Kölcsönös kizárással garantálhatóvá tehető, hogy a program a megfelelő sorrendben kerül végrehajtásra.
+% cite avr hal docs
+A HAL tartalmaz egy ilyen eszközt, amely egy "kritikus szekciók" alapú megvalósítás.
+Segítségével garantálható, hogy egy adott szakasz végrehajtása során nem kerül egy megszakítás sem végrehajtásra.

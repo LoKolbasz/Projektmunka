@@ -32,6 +32,8 @@
 \usepackage{booktabs}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{multirow}
+\usepackage{tabularx}
 
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 \DeclareMathOperator*{\argmax}{argmax} 
@@ -108,3 +110,5 @@
     \@starttoc{lot}%
     }
 \makeatother
+
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X} % modified 'X' column type

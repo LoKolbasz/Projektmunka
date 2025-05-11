@@ -6,16 +6,40 @@ Ennél a megközelítésnél előgyártott makró közgyűrűsorokat használva,
     \item Egy gyűrűn belül oldalról ráakaszkodás \label{nem_mukszik_csat}
     \item Kettő gyűrű használatával a kettő csatlakozójának külső, hozzáadott összekötésére való ráakaszkodással.\label{mukszik_csat}
 \end{enumerate}
-Az \ref{nem_mukszik_csat} előnye az, hogy könnyen az objektív továbbra is képes képet vetíteni a fényképezőgép szenzorjára. Lehet vele fókuszálni, de csak közelre.
+
+Az \ref{nem_mukszik_csat}-es megoldás előnye az, hogy könnyen az objektív továbbra is képes képet vetíteni a fényképezőgép szenzorjára. Lehet vele fókuszálni, de csak közelre.
 Hátránya, hogy nagy mértékben a használt közgyűrű eszközön múlik, és azon, hogy mennyire lehet a belső jelhordozókhoz hozzáférni.
 
-A \ref{mukszik_csat} előnye, hogy könnyebben megvalósítható, és kevésbé van a használt közgyűrűnek hatása a megvalósításra.
+A \ref{mukszik_csat}-es megoldás előnye, hogy könnyebben megvalósítható, és kevésbé van a használt közgyűrűnek hatása a megvalósításra.
 Hátránya, hogy használatakor nem vetít képet az objektív a kameraszenzorra külső fény beszökése nélkül, ezáltal az kévésbé tud üzemelni.  
-\paragraph{Nikon Z}
-Használt közgyűrűsor: Meike MK-Z-AF1.
+\subsubsection{Nikon Z}
+Használt közgyűrűsor: Meike MK-Z-AF1, amely teljes AF támogatással rendelkezik \cite{meike_z}.
 
-\paragraph{Nikon F}
+Vizsgálat alapján a \ref{nem_mukszik_csat}-es megközelítés nem alkalmazható, mivel nem lehet kivezetni a jelet a házból, annak szétszerelésével sem.
+A \ref{mukszik_csat}-es megközelítés során a kontkatra forrasztás során a műanyag ház megolvadt és a kontakttartók elveszítették a helyes elrendezésüket.
 
+A szakdolgozat szempontjából a legjobb felhasználási területe ennek az eszköznek, hogy egy keretként szolgáljon külső összekötő kábeleknek.
+\subsubsection{Nikon F}
+Használt közgyűrűsor: Meike MK-N-AF1-A, amely elektronikus és vázcsavaros AF-t is támogat.\cite{meike_f}
+
+Ebben az esetben sem alkalmazható a \ref{nem_mukszik_csat} megközelítés, megegyező okokból.
+
+A \ref{mukszik_csat}-es megközelítésnél a forrasztás során az adatkapcsolatért felelő vonal megszakadt, ezért az így módosított közgyűrű erre a célra már nem használható.
+
+Bár a forrasztás túl kockázatos, részleges szétszereléssel hozzáférhetővé válik egy olyan kontaktonként elválasztott vezetőfelület, amihez forrasztás nélkkül viszonylag egyszerűen hozzáköthető egy-egy jumper, így hím oldali csatlakozóként használhatóak nem károsult közgyűrűk.
+Ez előnyős, mivel itt találhatóak a nehezebben replikálható, nyomásra visszahúzódó tűs csatlakozások.
 \subsection{3D nyomtatott csatlakozók}
+Mivel a piacon elérhető közgyűrűsorok nem alkalmazhatóak minden esetben, ezért szükséges saját készítésű csatlakozókra.
+Annak érdekében, hogy egy precíz tervekből precíz kontaktvázak készüljenek 3D nyomtató technika került felhasználásra.
+\subsubsection{Bajonett}
+\label{bajonett_mero}
+A bajonett csatlakozásokat különbőző célokra (pl.: makró közgyűrűsor, váz/objektívsapka) már sokan lemodellezték, és elérhetővé tették.
+Ezekből a modellekből a releváns részeket leválasztva kontakttartók kerültek hozzáadásra, tolómérővel mért adatok alapján.
+A kinyomtatott elemek kontakttartóinak elhelyezkedésre ezt követően tesztelésre is került.
+
 \subsubsection{Kontakt problémák}
-\subsubsection{Áthallás}
+Mivel a kinyomtatott csatlakozókba a kábelek manuálisan lettek behelyezve, nem sikerült jó kapcsolatba lépniül az objektívekkel nyomás hiánya miatt.
+
+\subsection{Áthallás}
+Az Arduino-n futtatott kutatószoftver tesztelésekor jelentős (Több voltnyi) áthallás volt megfigyelhető az egymás mellé bekötött lábaknál.
+Ennek hatása csökkenthető, ha a lehető legkevesebb egymás melletti láb kerül felhasználásra.

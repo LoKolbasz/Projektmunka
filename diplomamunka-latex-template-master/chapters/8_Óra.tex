@@ -50,13 +50,14 @@ A használt megszakítás az óra paraméterei alapján kerül kiválasztásra.
 \begin{table}[H]
     \centering
     \begin{tabular}{|lr|}
-    \toprule
-    \multicolumn{2}{|c|}{Lehetséges értékek}                              \\ \midrule
-    \multicolumn{1}{|l|}{0}    & direkt / nincs skálázás                  \\ \midrule
-    \multicolumn{1}{|l|}{8}    & \multirow{4}{*}{skálázás adott értékkel} \\ \cmidrule(r){1-1}
-    \multicolumn{1}{|l|}{64}   &                                          \\ \cmidrule(r){1-1}
-    \multicolumn{1}{|l|}{256}  &                                          \\ \cmidrule(r){1-1}
-    \multicolumn{1}{|l|}{1024} &                                          \\ \bottomrule
+    \hline
+    \rowcolor{lightgray}
+    \multicolumn{2}{|c|}{Lehetséges értékek}                              \\ \hline
+    \multicolumn{1}{|l|}{0}    & direkt / nincs skálázás                  \\ \hline
+    \multicolumn{1}{|l|}{8}    & \multirow{4}{*}{skálázás adott értékkel} \\ \cline{1-1}
+    \multicolumn{1}{|l|}{64}   &                                          \\ \cline{1-1}
+    \multicolumn{1}{|l|}{256}  &                                          \\ \cline{1-1}
+    \multicolumn{1}{|l|}{1024} &                                          \\ \hline
     \end{tabular}
     \caption{Skálázó lehetséges értékei}
     \label{tab:skalazo_ertekek}

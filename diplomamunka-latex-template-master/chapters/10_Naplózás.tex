@@ -6,11 +6,11 @@ Emellett segíthet a különböző hibakeresési folyamatokban, ha a program jel
 \subsection{Naplózó kimenet: USART}
 Az Arduino nem rendelkezik képernyővel. Látható kimenetként egyedül beépített LEDekkel rendelkezik.
 Lehetséges az eszközre egy LED kijelzőt helyezni, viszont egyszerűbb, és célszerűbb a beépített soros (USB) porton személyi számítógépre (PC) küldeni az adatokat.
-A HAL-ban megtalálható USART vezérlővel, és a uFMT formázóval erre a kimenetre küldött adatok a megfelelő, olvasható formában fognak megérkezni.
+A HAL-ban megtalálható USART vezérlővel, és a µFMT formázóval erre a kimenetre küldött adatok a megfelelő, olvasható formában fognak megérkezni.
 
-\subsubsection{uFMT}
-Az ufmt, egy (6-40-szer) kisebb, (2-9-szer) gyorsabb és pánik mentes alternatívája az alapértelmezett formázónak.\cite{ufmt_rust}
-Ezek a tulajdonságai nagyon kedvezővé teszik, az erőforrásokban korlátolt (256KB Flash, 4KB EEPROM, 8KB RAM) ATmega2560 processzorral[cite] történő használatra.
+\subsubsection{µFMT}
+Az µfmt, egy (6-40-szer) kisebb, (2-9-szer) gyorsabb és pánik mentes alternatívája az alapértelmezett formázónak.\cite{ufmt_rust}
+Ezek a tulajdonságai nagyon kedvezővé teszik, az erőforrásokban korlátolt ATmega2560 processzorral történő használatra.
 Azonban a "Log" interfész metódusainak argumentumai nem támogatják ezt a formázót, ezért azok a metaadatok nem formázhatóak ez által.
 Ennek az az eredménye, hogy a méret beli előnyök kevésbé jelentősek, hiszen mindenképpen mellékelni kell az alapértelmezett formázót.
 A kiküldendő üzenet végső formázását azonban már átveszi ez a modul, ahol kihasználásra kerül az alacsonyabb futási idő, a dolgozat specifikus metaadat (rögzítés ideje), a standard formázóval már formázott metaadat és az üzenet egymáshoz illesztésekor.
@@ -53,7 +53,7 @@ Ez további fölöslegesen a programba fordított kódot tartalmaz, és a linkel
 Mivel az említett szerializáló csomagok egyike sem eredményezett futtatható állományt, ezért a legminimálisabb megoldás hasnálata vált célszerűvé.
 \paragraph{Írás egyenesen USART kimenetre}
 A cél egyszerű adatstruktúrák JSON-formátumban történő kiírása a soros kimenetre USART hasnálatával.
-Mivel a HAL-ba beépített USART megvalósítás támogatja a uWrite interfészt, ezért a ufmt formázóval egyenesen a kimenetre lehet írni a karaktereket, ezzel minimalizálva a memóriahasználatot.
+Mivel a HAL-ba beépített USART megvalósítás támogatja a uWrite interfészt, ezért a µfmt formázóval egyenesen a kimenetre lehet írni a karaktereket, ezzel minimalizálva a memóriahasználatot.
 Ezt az írót a szerializáló függvény függőségi injekcióval egy módosítható referencia függvényparaméterként veszi át, hogy a kimenet továbbra is használható legyen a hívó által, és írni is lehessen a kimenetre.
 \paragraph{JSON formátum referencia}
 A kompatibilitás megőrzése érdekében elengedhetetlen betartani a JSON nyílt szabvány előírásait.

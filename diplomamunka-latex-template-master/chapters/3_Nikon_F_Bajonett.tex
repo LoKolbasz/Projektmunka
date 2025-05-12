@@ -82,6 +82,48 @@ A CPU kontaktok száma objektívek között váltózó.\cite{Nikon_CPU}
 A referencia kameraváz, valamint a hivatalos Nikon FTZ adapter is 8 tűvel rendelkezik, így ez az adapter is ennyit fog használni.
 Ennél több nem kamera vázakon, csak objektíveken és telekonvertereken, ezért vázszimulációhoz szükségtelen.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{img/Fmount.png}
+	\caption{Nikon fényképezőgépvázon található elektromos kontaktok}
+	\label{fig:FMount}
+\end{figure}
+\keepXColumns
+\begin{tabularx}{\textwidth}{|c|c|c|c|X|}
+    \hline
+    \rowcolor{lightgray}\textbf{Tű} & \textbf{AF} & \textbf{AF-S 8-tűs} & \textbf{AF-S 10 tűs} & \textbf{Leírás} \\
+    \hline
+    \endfirsthead
+    
+    \hline
+    \rowcolor{lightgray}\textbf{Tű} & \textbf{AF} & \textbf{AF-S 8-tűs} & \textbf{AF-S 10 tűs} & \textbf{Leírás} \\
+    \hline
+    \endhead
+    
+    1/A & x & x & x & 5V Vcc táp \\
+    \hline
+    2/B & x & x & x & Soros RW kiválasztó / \textit{kézfogás} \\
+    \hline
+    3/C & x & x & x & Soros órajel \\
+    \hline
+    4/D & x & x & x & Soros adat IO \\
+    \hline
+    5/E &   & x & x & Impulzussor. Pulzusok száma: fókuszváltás mennyisége. Pulzusok frekvenciája: fókuszváltás sebessége. M/A (Manual autofocus override) módban aktív, M (Manual) módban inaktív. Kamerával közli a fókusz változását. Nyílt kollektor kimenet. Kamerának logikai magas állapotba kell raknia a működéshez. 0xEA parancs 1 bitje irányítja a kimenetét. \\
+    \hline
+    6/F &   & x & x & Vmotor táp Zoom, VR, Autofókusz számára. ~6.2V (D800, D5100, F5) \\
+    \hline
+    7/G & x & x & x & Föld \\
+    \hline
+    8/H &   & x & x & Pin 5 90° fáziseltolásban. Az eltolás iránya jelzi a fókusz irányát. Csak Pro kamerákon (opcionális). 0xEA parancs 0 bitje irányítja. \\
+    \hline
+    9/I &   &   & x & Telekonverter indikátor/kommunikáció. \\
+    \hline
+    10/J &   &   & x & Telekonverter indikátor/kommunikáció. \\
+    \hline
+    \caption{Nikon F csatlakozás kontaktok szerepei.}
+    \label{tab:nikon_pins}
+\end{tabularx}
+
 \subsection{Kommunikáció}
 A Nikon F bajonettcsatlakozónál az objektív és a fényképezőgépváz közötti kommunikáció történhet mechanikai(AI, AI-S jelölésű objektívek)\cite{Lens_naming}, elektronikai (E jelölésű objektívek)\cite{Lens_naming}, valamint egyszerre mechanikai és elektronikai (AI-P, AF, AF-I, D és G jelölésű objektívek)%\cite{Nikon_naming_convention}
 \cite{Nikon_CPU}úton. Ezeken a kategóriákon belüli csatlakozók között lehetnek további különbségek az eszközök funkcióitól függően.

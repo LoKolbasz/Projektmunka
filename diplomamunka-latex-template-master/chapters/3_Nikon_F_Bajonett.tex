@@ -24,29 +24,6 @@ Az F-Csatlakozás és a NIKKOR objektívek képességeinek adaptálásával és 
 %out quickly and efficiently for different scenarios, and allows for the
 %easy integration of electronic features (iris/focus control) since they
 %are a clocked mechanism.
-\paragraph{Rögzítés}
-A csatlakozás felettébb tartós\cite{Nikon_F_mount-ról}.
-Az objektívet az azon és a fénykpezővázon feltüntetett jelzések mentén kell a váz csatlakozójára illeszteni, majd elforgatni.
-A megfelelő illesztés során az objektív csatlakozója enyhén belecsúszik a vázoldali részbe, ahol a kettő gyűrűjének a kialakítása vezeti az objektívet a forgatás során.
-A túl, vagy rossz irányú forgatást ütközők akadályozzák meg.
-Amikor az objektív a megfelelő pozícióba ér, egy rugó által kitolt tüske rögzíti azt.
-Levételkor egy gomb elnyomásának, vagy egy rugós kapcsoló elhúzásának köszönhetően ez a tüske visszahúzódik, így engedélyezve az objektív levehető pozíció felé mozgatását.
-
-\paragraph{Kommunikáció}
-A Nikon F bajonettcsatlakozónál az objektív és a fényképezőgépváz közötti kommunikáció történhet mechanikai(AI, AI-S jelölésű objektívek)\cite{Lens_naming}, elektronikai (E jelölésű objektívek)\cite{Lens_naming}, valamint egyszerre mechanikai és elektronikai (AI-P, AF, AF-I, D és G jelölésű objektívek)%\cite{Nikon_naming_convention}
-\cite{Nikon_CPU}úton. Ezeken a kategóriákon belüli csatlakozók között lehetnek további különbségek az eszközök funkcióitól függően.
-
-\subsection{Objektív oldali csatlakozó}
-
-\subsubsection{Elektrnikus kommunikáció:}
-UPDATE WITH NIKON HACKERS STUFF. REFERENCE REPAIR MANUALS FOR THE CONTACTS. ADD KNOWN PROTOCOL CODES.
-Az összes CPU-val rendelkező objektív csatlakozásán találhatóak elektronikus kontaktok \cite{Nikon_CPU}. Ezek feladata az, hogy gyors kommunikációt létesítsenek az objektív és a kameraváz között.
-A kamera által az objektívvel elektronikusan közölt információk:
-\begin{itemize}
-    \item Amennyiben az objektív nem AF típusú autófókuszmechanizmust tartalmaz, a fókuszáláshoz szükséges adatok.
-    \item E jelölésű objektíveknél rekeszátmérőt állító jelek.
-\end{itemize}
-Ezeken kívül a kamera elelektromos árammal is ellátja ezeket az eszközöket, ezzel biztosítva azt, hogy az objektívek és kiegészítők megfelelően, külső áramforrás nélkül tudjanak üzemelni. A CPU kontaktok száma objektívek között váltózó.\cite{Nikon_CPU} AF-I, AF-S és AF-P esetében a beépített fókuszmotornak is ez szolgál áramforrásként.
 
 %Ez itt a \ref{fig:AF_kontakt} ábra.
 \begin{figure}[H]
@@ -69,12 +46,175 @@ Ezeken kívül a kamera elelektromos árammal is ellátja ezeket az eszközöket
 % 	\caption{Elektronikus kontaktok Nikon AF-S 70-200mm E FL ED VR objektíven}
 % 	\label{fig:E_kontakt}
 % \end{figure}
+\subsection{Rögzítés}
+A csatlakozás felettébb tartós\cite{Nikon_F_mount-ról}.
+Az objektívet az azon és a fényképezővázon feltüntetett jelzések mentén kell a váz csatlakozójára illeszteni, majd elforgatni.
+A megfelelő illesztés során az objektív csatlakozója enyhén belecsúszik a vázoldali részbe, ahol a kettő gyűrűjének a kialakítása vezeti az objektívet a forgatás során.
+A túl, vagy rossz irányú forgatást ütközők akadályozzák meg.
+Amikor az objektív a megfelelő pozícióba ér, egy rugó által kitolt tüske rögzíti azt.
+Levételkor egy gomb elnyomásának, vagy egy rugós kapcsoló elhúzásának köszönhetően ez a tüske visszahúzódik, így engedélyezve az objektív levehető pozíció felé mozgatását.
 
-\subsubsection{Mechanikus kommunikáció}
-A CPU-val nem rendelkező objektívek nem tudnak elektronikus úton kommunikálni, ezért a kommunikáció jelentős mértékben lekorlátozódik, és csak kevés információ, lassú cseréje lehetséges. Ennek ellenére a visszafelé kompatibilitás megőrzése érdekében és a technológia egyszerűségének köszönhetően, az E jelölésű objektíveken kívűl minden objektív rendelkezik ilyen kapcsolatokkal.
+\subsection{Rekeszátmérő állítás}
+A fényképezés során legtöbb esetben a fókuszálást nem a kiválasztott rekeszértékkel végzi a kamera (automatikusan) vagy a fényképész (manuálisan).
+Emiatt a rekeszértéket a fénykép készítése előtt a megfelelő értékre kell állítani.
+Ez régebbi objektíveknél manuálisan történt (ezek nem használhatóak a modern SLR és DSLR rendszerekkel), de az F bajonettes objektíveknél ez már autómatikusan az "autómatikus diafragmánaknak" köszönhetően valósul meg.
+Ilyenkor amennyiben a rekeszátmérő nem esik egy előre meghatározott érték alá, a fókuszáláskor használatos rekeszátmérő megegyezik a kép készítésekor felvett rekeszátmérővel. Ellenkező esetben a fénykép készítésekor a diafragma a nyilt (\ref{fig:17-55_nyilt} ábra) állásáról a zárt (\ref{fig:17-55_zart} ábra) állására ugrik át, ami már a beállított érték.
+Ennek a folyamatnak minél gyorsabbnak kell lennie, hogy a fényképen az látszódjon, amit a kezelő a gomb lenyomásakor beállított. \cite{Practical_design_considerations_for_modern_photographic_optics}
+\paragraph{Kívánt érték megadása}
+A kívánatos érték érték a Nikon rendszereken kettő féle képpen történhet meg:
+\begin{itemize}
+    \item Objektíven a rekeszátmérő gyűrű segítségével.(G és E objektíveken nem elérhető)
+    \item A kamerán található rekeszátmérő állító kerékkel.
+\end{itemize}
+Amennyiben az objektív mindkét lehetőséget használatát megengedi, a vázon a fényképésznek be kell állítania, hogy melyik módszert szándékozik használni.
+Ha a felhasználó a fényképezőgépen akarja állítani az értéket, egy rekeszátmérő gyűrűvel rendelkező objektív használatánál, a rekeszátmérőt az objektíven található gyűrűn a legnagyobb f-értékre kell állítania a felhasználónak.
+Erre a lépésre fényképezőgép is figyelmeztet.\cite{Nikon_D6_referencia_használati_utasítás}
+
+\subsection{Elektronikus csatlakozás}
+% UPDATE WITH NIKON HACKERS STUFF. REFERENCE REPAIR MANUALS FOR THE CONTACTS.
+Az összes CPU-val rendelkező objektív csatlakozásán találhatóak elektronikus kontaktok.\cite{Nikon_CPU}
+Ezek feladata az, hogy gyors kommunikációt létesítsenek az objektív és a kameraváz között.
+
+Ezeken kívül a kamera elelektromos árammal is ellátja ezeket az eszközöket, ezzel biztosítva azt, hogy az objektívek és kiegészítők megfelelően, külső áramforrás nélkül tudjanak üzemelni.
+AF-I, AF-S és AF-P esetében az objektívbe beépített fókuszmotornak is ez szolgál áramforrásként.
+
+A CPU kontaktok száma objektívek között váltózó.\cite{Nikon_CPU}
+A referencia kameraváz, valamint a hivatalos Nikon FTZ adapter is 8 tűvel rendelkezik, így ez az adapter is ennyit fog használni.
+Ennél több nem kamera vázakon, csak objektíveken és telekonvertereken, ezért vázszimulációhoz szükségtelen.
+
+\subsection{Kommunikáció}
+A Nikon F bajonettcsatlakozónál az objektív és a fényképezőgépváz közötti kommunikáció történhet mechanikai(AI, AI-S jelölésű objektívek)\cite{Lens_naming}, elektronikai (E jelölésű objektívek)\cite{Lens_naming}, valamint egyszerre mechanikai és elektronikai (AI-P, AF, AF-I, D és G jelölésű objektívek)%\cite{Nikon_naming_convention}
+\cite{Nikon_CPU}úton. Ezeken a kategóriákon belüli csatlakozók között lehetnek további különbségek az eszközök funkcióitól függően.
+
+\subsubsection{Elektronikus adatkommunikáció:}
+A kamera által az objektívvel elektronikusan közölt információk közé tartoznak:
+\begin{itemize}
+    \item Amennyiben az objektív nem AF típusú autófókuszmechanizmust tartalmaz, a fókuszáláshoz szükséges adatok.
+    \item E jelölésű objektíveknél rekeszátmérőt állító jelek.
+\end{itemize}
+Az objektív által a kamerával elektronikusan közölt információk közé tartoznak:
+\begin{itemize}
+    \item Az objektívet vagy kiegészítőt azonosító információ.
+    \begin{itemize}
+        \item Az objektív maximális rekeszátmérője.
+        \item Az objektív minimális rekeszátmérője.
+        \item Az objektív elnevezése.
+        \item Az objektív gyújtótávolsága.%\cite{Nikon_naming_convention}
+    \end{itemize}
+    \item Az objektív jelenlegi rekeszátmérője.
+    \item Az objektív autófókuszálásához szükséges információk.
+    \item D, G és E jelölésű objektíveknél az objektíven beállított fókusztávolság.
+    \item Egyéb fénymérést segítő információ.
+\end{itemize}
+
+Ennek pontos működése nem ismert, hivatalos Nikon dokumentáció nem érhető el, viszont online közösségek által végzett kutatások alapján nem hivatalos, részleges specifikációk elérhetőek.
+\paragraph{Adatátvitel}
+SPI-szerű soros, szinkron, kommunikációs protokollal történik, amely a követlezőekben tér el a szabványtól:
+\begin{itemize}
+    \item PS (periféria kiválasztó) el van hagyva.
+    \item PI (periféria bemenet) és (PO - periféria kimenet) ugyan azon az adatúton helyezkedik el
+    \item Kézfogásvonal került hozzáadásra.
+\end{itemize}
+
+A protokoll 3-as módban üzemel:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \rowcolor{lightgray} SPI mode & Polaritás regiszter & Fázis regiszter & Küldő Óra ág & Beolvasó óra ág \\
+        \hline
+        3 & logikai magas & logikai magas & zuhanó ágon & emelkedő ágon \\
+        \hline
+    \end{tabular}
+\end{table} \textbf{Polaritás:} Óra adatküldésen kívöli állapota.\\
+\textbf{Fázis:} Az óra melyik ágán történik a mintavétel, bitküldés.
+
+Az adat bájtonkként kerül továbbításra a legkisebb helyiértékű bittel kezdve.
+Az alapértelmezett órajel 96~kHz, azonban újabb AF-S objektívek esetében ez akár 156~kHz-re is növekedhet (pl. a \texttt{0x40} parancs után).
+Az adapternek is célszerű ezt az órajelet használnia az alacsonyabb reakcióidő érdekében.
+
+\paragraph{Kommunikációs szekvencia}
+
+A kommunikációt mindig a fényképezőgép váza kezdeményezi azáltal, hogy 
+a \textit{kézfogás} vonalat alacsony szintre húzza 1600~$\mu$s ideig 
+(96~kHz-en), vagy 100~$\mu$s-ig (156~kHz esetén), majd elengedi. 
+
+Ezután az objektív húzza le a \textit{kézfogás} vonalat, jelezve, hogy készen 
+áll a parancs fogadására. Ha az objektív nem válaszol időben, a parancs 
+megszakad.
+
+Egy parancs egyetlen bájtból áll, de azt további adatbájtok követhetik, 
+amelyek iránya és száma az eszközök által előre ismert, konstans.
+Az adatátvitelt bármelyik fél megszakíthatja: az objektív nem húzza le újra a \textit{kézfogás} vonalat, vagy a váz nem ad órajelet. 
+
+Ha körülbelül 5ms-ig nincs adatforgalom, a kommunikációs ciklus megszakítottnak tekintendő.
+
+Fontos: a modern objektívek nem küldenek vissza \texttt{0xFF} bájtot 
+ismeretlen parancs esetén. Ehelyett egyszerűen megszakad a kommunikáció.
+
+\paragraph{Ismert parancsok}
+
+\begin{longtable}{|c|p{3.5cm}|p{3.5cm}|p{5cm}|}
+    \hline
+    \rowcolor{lightgray}
+    \textbf{Parancs} & 
+    \textbf{Paraméterek (váz $\rightarrow$ obj.)} & 
+    \textbf{Válasz (obj. $\rightarrow$ váz)} & 
+    \textbf{Leírás} \\
+    \hline
+    \endfirsthead
+    
+    \hline
+    \rowcolor{lightgray}
+    \textbf{Parancs} & 
+    \textbf{Paraméterek (váz $\rightarrow$ obj.)} & 
+    \textbf{Válasz (obj. $\rightarrow$ váz)} & 
+    \textbf{Leírás} \\
+    \hline
+    \endhead
+    
+    \hline
+    \multicolumn{4}{r}{\textit{Folytatás a következő oldalon}} \\
+    \endfoot
+    
+    \endlastfoot
+    
+    \texttt{0x26} & – & 8 bájt & Ismeretlen funkció (feltételezhetően olvasási kísérlet) \\
+    \hline \texttt{0x27} & – & 40 bájt & Objektív státusz-lekérdezés (workaround Rokinon bug miatt) \\
+    \hline\texttt{0x28} & – & 44 bájt & Objektív státusz és ID információ lekérése \\
+    \hline \texttt{0x40} & \texttt{00 00 01 04 00 00 01} & \texttt{02 1A} (D5100), \newline \texttt{02 1B} (D800) & Objektív képességeinek lekérdezése, sebességváltás 156~kHz-re \\
+    \hline \texttt{0x41} & \texttt{02 1A} & – & A korábban küldött adatok visszaolvasása \\
+    \hline \texttt{0xC2} & – & 4 bájt & Ismeretlen funkció \\
+    \hline \texttt{0xC5} & – & 8 bájt & Ismeretlen funkció \\
+    \hline \texttt{0xD1} & – & 1 bájt & VR bekapcsolása (funkció bájt ismeretlen) \\
+    \hline \texttt{0xD2} & – & 3 bájt & VR bekapcsolása (funkció bájtok ismeretlenek) \\
+    \hline \texttt{0xD3} & – & 1 bájt & Csak VR objektíveken, VR állapottól függetlenül \\
+    \hline \texttt{0xD4} & – & 1 bájt & Csak VR objektíveken, VR állapottól függetlenül \\
+    \hline \texttt{0xD5} & – & 4 bájt & Csak VR objektíveken, VR állapottól függetlenül \\
+    \hline \texttt{0xE0} & – & 4 bájt & AF adott távolságra és irányba \newline (2–3. bájt: 15 bites little-endian, előjeles) \\
+    \hline \texttt{0xE3} & – & – & AF motor leállítása \\
+    \hline \texttt{0xE7} & – & 1 bájt & Ismeretlen funkció \\
+    \hline \texttt{0xE8} & – & 5 bájt & Gyors AF pozícióra, majd folyamatos sebesség \\
+    \hline \texttt{0xEA} & – & 1 bájt & GMR visszajelzés vezérlése (bit0,1: lábak 8,5) \\
+    \hline \texttt{0xEC} & – & 3 bájt & AF adott irányba és sebességgel \newline (bájt0: bit3 végállás/fordulás, bit4 irány; \newline bájt1–2: sebesség m, n paraméterek) \\
+    \hline \caption{Jellemző objektív parancsok és kiegészítések. \cite{nikonhacker_fmount}, \cite{lainy_nikonlens_issue1}}
+\end{longtable}
+
+Bizonyos nem gyári objektívek (pl. RokiBowYang 8~mm f/3.5) \texttt{0xFF} 
+válasszal reagálnak ismeretlen parancsokra, de ezt modern vázak (pl. D5100, 
+D800) figyelmen kívül hagyják.\cite{nikonhacker_fmount}, \cite{lainy_nikonlens_issue1}
+
+
+\subsubsection{Elektronikus autómatikus diafragma}
+Az E és csakis az E jelölésű objektívek a soros interfésszel állítják be a rekeszátmérőt.
+"Egy elektromágneses diafragma mechanizmus van beépítve ezen objektívek testébe, amit elektromos jelek irányítanak a fényképezővázból. "\cite{Lens_naming}
+
+\subsection{Mechanikus kommunikáció}
+A CPU-val nem rendelkező objektívek nem tudnak elektronikus úton kommunikálni, ezért a kommunikáció jelentős mértékben lekorlátozódik, és csak kevés információ, lassú cseréje lehetséges.
+Ennek ellenére a visszafelé kompatibilitás megőrzése érdekében és a technológia egyszerűségének köszönhetően, az E jelölésű objektíveken kívűl minden objektív rendelkezik ilyen kapcsolatokkal.
 A fényképezőváz által az objektíveken mechanikusan állított értékek:
 \begin{itemize}
-    \item AF objektívek esetén fókusztávolság. [\ref{fig:AF_csavar}]
+    \item AF objektívek esetén fókusztávolság. (\ref{fig:AF_csavar}-es ábra)
     \begin{figure}[H]
     	\centering
     	\includegraphics[width=0.5\linewidth]{img/Nikon_50mm_1.8_AF_csavar.jpg}
@@ -90,34 +230,53 @@ A fényképezőváz által az objektíveken mechanikusan állított értékek:
         	\caption{Mechanikus kar a rekesz nyitására és zárására használt álláskapcsoló G típusú Nikon objektíven}
         	\label{fig:G_rekeszkar}
         \end{figure}
-        \item Jelenleg beállított érték\ref{fig:Exposure_coupleing}
+        \item Jelenleg beállított érték (\ref{fig:Exposure_coupleing} ábra)
         \begin{figure}[H]
         	\centering
         	\includegraphics[width=0.75\linewidth]{img/lenses-AI-and-non-AI.jpg}
         	\caption{Nikon objektívek mechanikus rekeszátmérő csatlakozói \cite{Legacy_lenses}}
             \medskip
-            \Centering
-            \small Balról jobbra: Nikon AI-elötti objektív, rekeszátmérő csatlakozó cipő pirossal bekarikázva; Nikon AI objektív,  rekeszátmérő csatlakozó cipő pirossal bekarikázva, rekeszátmérő csatlakozó gerinc kékkel bekarikázva; Nikon AF-D objektív, rekeszátmérő csatlakozó gerinc kékkel bekarikázva; Nikon AF-S objektív nem kommunikál rekeszátmérő információt mechanikusan.\cite{Legacy_lenses}
+            \justify Balról jobbra: Nikon AI-előtti objektív, rekeszátmérő csatlakozó pirossal bekarikázva; Nikon AI objektív,  rekeszátmérő csatlakozó cipő pirossal bekarikázva, rekeszátmérő csatlakozó gerinc kékkel bekarikázva; Nikon AF-D objektív, rekeszátmérő csatlakozó gerinc kékkel bekarikázva; Nikon AF-S objektív nem kommunikál rekeszátmérő információt mechanikusan.\cite{Legacy_lenses}
         	\label{fig:Exposure_coupleing}
         \end{figure}
     \end{itemize}
 \end{itemize}
 
-\subsubsection{Rekeszátmérő állítás}
-A fényképezés során legtöbb esetben a fókuszálást nem a kiválasztott rekeszértékkel végzi a kamera (autómatikusan) vagy a fényképész (manuálisan). Emmiatt a rekeszértéket a fénykép készítése elött a megfelelő értékre kell állítani. Ez régebbi objektíveknél manuálisan történt (ezek nem használhatóak a modern SLR és DSLR rendszerekkel), de az F bajonettes objektíveknél ez már autómatikusan az "autómatikus diafragmánaknak" köszönhetően valósul meg. Ilyenkor amennyiben a rekeszátmérő nem esik egy előre meghatározott érték alá, a fókuszáláskor használatos rekeszátmérő megegyezik a kép készítésekor felvett rekeszátmérővel. Ellenkező esetben a fénykép készítésekor a diafragma a nyilt (\ref{fig:17-55_nyilt} ábra) állásáról a zárt (\ref{fig:17-55_zart} ábra) állására ugrik át, ami már a beállított érték. Ennek a folyamatnak minél gyorsabbnak kell lennie, hogy a fényképen az látszódjon, amit a kezelő a gomb lenyomásakor beállított. \cite{Practical_design_considerations_for_modern_photographic_optics}
-\paragraph{Kívánt érték megadása}
-A kívánatos érték érték a Nikon rendszereken kettő féle képpen történhet meg:
+Az objektív által a fényképezővázon mechanikusan állított értékek:
 \begin{itemize}
-    \item Objektíven a rekeszátmérő gyűrű segítségével.(G és E objektíveken nem elérhető)
-    \item A kamerán lávő rekeszátmérő állító kerékkel.
+    %\item Objektív gyújtótűvolsága, AI-típusú objektíveken %\cite{Nikon_naming_convention}
+    \item Objektív jelenleg beállított rekeszátmérője. \cite{Lens_naming}
+    \item Objektív maximális rekeszátmérője. \cite{Lens_naming}
 \end{itemize}
-Amennyiben az objektív mindkét lehetőséget használatát megengedi, a vázon a fényképésznek be kell állítania, hogy melyik módszert szándékozik használni. Amennyiben a fényképezőgépen akarja állítani az értéket, egy rekeszátmérő gyűrűvel rendelkező objektív használatánál, a rekeszátmérőt az objektíven található gyűrűn a legnagyobb f-értékre kell állítania a felhasználónak. Erre a lépésre fényképezőgép is figyelmeztet.\cite{Nikon_D6_referencia_használati_utasítás}
 
-\paragraph{Mechanikus autómatikus diafragma}
-A legtöbb Nikon objektíven ilyen autómatikus diafrámmal rendelkezik. A (\ref{fig:G_rekeszkar}) képen látható álláskapcsolót egy rugó (amennyiben a álláskapcsolót más meg nem mozdítja) a zárt pozíció felé tolja. A fókuszálás során a álláskapcsolót egy, a fényképezőgépvázon található kar, a nyílt pozícióba tolja. A kép készítésekor ez a kar úgy mozdul, mogy az álláskapcsoló szabadon a zárt pozícióba tudjom kerülni, a rugó nyomásának köszönhetően. Eközben a rekeszátmérőért felelős lamellák addig záródnak össze, amíg meg nem állítja őket az objektív belső mechanikája, ami a fényképkészítő gomb lenyomása elött került beállításra. Az álláskapcsoló addig marad zárt állásban, amíg a fényképezőgép kéri, ezt követően a kar visszaviszi a kapcsolót a nyílt állásba, és várja a további utasításokat. A zárt állapot több kép elkészítésén át is fennmaradhat, amennyiben azok elég nyorsan követik egymást. Az álláskapcsoló állása bináris, így vagy teljesen nyílt, vagy teljesen zárt állapotban van, a kettő között nem állítható be átmeneti állapot.
+\subsubsection{Csavar alapú autófókusz}
 
-\paragraph{Elektronikus autómatikus diafragma}
-Kizárólag E jelölésű objektívek használják ezt a módszer. "Egy elektromágneses diafragma mechanizmus van beépítve ezen objektívek testébe, amit elektromos jelek irányítanak a fényképezővázból. "\cite{Lens_naming}
+Az objektíveknél, amelyek ezt a mechanizmust használják, "nem lehet az autófókuszt üzemeltetni, kivéve ha egy beépített fókuszmotorral rendelkező digitális vagy film SLR kamera van használva." A fókuszálási sebesség attól függ, hogy a vázba épített fókuszmotor, milyen sebességgel képes forgatni a (\ref{fig:F100_AF_csavar}) képen látható csavarfejet, ami a (\ref{fig:AF_csavar}) képen látszódó csavart hajtja meg.
+% there can be no autofocus operation unless a digital or film SLR camera with the autofocus motor built-in to the camera body is used
+
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=0.5\linewidth]{img/Nikon-AI-bütyök.jpg}
+%	\caption{Nikon AI objektív csatlakozása. Rekeszátmérő csatlakozó bekeretezve.\cite{Nikon_CPU}}
+%	\label{fig:AI_back}
+%\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{img/F100_bajonett.jpg}
+	\caption{Nikon F100-as fényképezővázon található F bajonettcsatlakozás}
+	\label{fig:F_bajonett}
+\end{figure}
+
+\subsubsection{Mechanikus autómatikus diafragma}
+A legtöbb Nikon objektíven ilyen autómatikus diafrámmal rendelkezik.
+A (\ref{fig:G_rekeszkar}) képen látható álláskapcsolót egy rugó (amennyiben a álláskapcsolót más meg nem mozdítja) a zárt pozíció felé tolja.
+A fókuszálás során a álláskapcsolót egy, a fényképezőgépvázon található kar, a nyílt pozícióba mozgatja.
+A kép készítésekor ez a kar úgy mozdul, hogy az álláskapcsoló szabadon a zárt pozícióba tudjom kerülni, a rugó nyomásának köszönhetően.
+Eközben a rekeszátmérőért felelős lamellák addig záródnak össze, amíg meg nem állítja őket az objektív belső mechanikája, ami a fényképkészítő gomb lenyomása előtt került beállításra.
+
+Az álláskapcsoló addig marad zárt állásban, amíg a fényképezőgép kéri, ezt követően a kar visszaviszi a kapcsolót a nyílt állásba, és várja a további utasításokat.
+A zárt állapot több kép elkészítésén át is fennmaradhat, amennyiben azok elég gyorsan követik egymást.
 
 \begin{figure}[H]
 	\centering
@@ -131,50 +290,6 @@ Kizárólag E jelölésű objektívek használják ezt a módszer. "Egy elektrom
 	\includegraphics[width=0.5\linewidth]{img/Nikon_17-55_nyilt.jpg}
 	\caption{A rekeszátmérő kart elhúzva a rekesz kinyílik.}
 	\label{fig:17-55_nyilt}
-\end{figure}
-
-\paragraph{Csavar alapú autófókusz}
-
-Az objektíveknél, amelyek ezt a mechanizmust használják, "nem lehet az autófókuszt üzemeltetni, kivéve ha egy beépített fókuszmotorral rendelkező digitális vagy film SLR kamera van használva." A fókuszálási sebesség attól függ, hogy a vázba épített fókuszmotor, milyen sebességgel képes forgatni a (\ref{fig:F100_AF_csavar}) képen látható csavarfejet, ami a (\ref{fig:AF_csavar}) képen látszódó csavart hajtja meg.
-% there can be no autofocus operation unless a digital or film SLR camera with the autofocus motor built-in to the camera body is used
-
-\subsection{Váz oldali csatlakozó}
-\subsubsection{Elektronikus kommunikáció}
-Az összes modern Nikon SLR és DSLR bajonettje rendelkezik elektronikus csatlakozókkal. Ezek a következő információkat kapják az objektívektől és kiegészítőtől elektronikus úton:
-\begin{itemize}
-    \item Az objektívet vagy kiegészítőt azonosító információ.
-    \begin{itemize}
-        \item Az objektív maximális rekeszátmérője.
-        \item Az objektív minimális rekeszátmérője.
-        \item Az objektív elnevezése.
-        \item Az objektív gyújtótávolsága.%\cite{Nikon_naming_convention}
-    \end{itemize}
-    \item Az objektív jelenlegi rekeszátmérője.
-    \item Az objektív autófókuszálásához szükséges információk.
-    \item D, G és E jelölésű objektíveknél az objektíven beállított fókusztávolság.
-    \item Egyéb fénymérést segítő információ.
-\end{itemize}
-
-\subsubsection{Mechanikus kommunikáció:}
-%Az objektív által a fényképezőgépváznak mechanikusan csak az objektív gyújtótávolsága adható át, az is kizárólag AI típusú objektíveknél\ref{fig:Exposure_coupleing}.Ez csak a kevés filmes Nikon kamerával működik, és a legtöbb fényképezőgép nem nyeri ki ezt az információt ezen az úton.\cite{Nikon_CPU}\cite{Nikon_naming_convention}
-A fényképezőgépvázak képesek limitált mechanikus kommunikációt létesíteni F-bajonettes objektívekkel. E során a következő információkat tudják kinyerni:
-\begin{itemize}
-    \item Objektív gyújtótűvolsága, AI-típusú objektíveken %\cite{Nikon_naming_convention}
-    \item Objektív jelenleg beállított rekeszátmérője. \cite{Lens_naming}
-    \item Objektív maximális rekeszátmérője. \cite{Lens_naming}
-\end{itemize}
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[width=0.5\linewidth]{img/Nikon-AI-bütyök.jpg}
-%	\caption{Nikon AI objektív csatlakozása. Rekeszátmérő csatlakozó bekeretezve.\cite{Nikon_CPU}}
-%	\label{fig:AI_back}
-%\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\linewidth]{img/F100_bajonett.jpg}
-	\caption{Nikon F100-as fényképezővázon található F bajonettcsatlakozás}
-	\label{fig:F_bajonett}
 \end{figure}
 
 % \begin{figure}[H]

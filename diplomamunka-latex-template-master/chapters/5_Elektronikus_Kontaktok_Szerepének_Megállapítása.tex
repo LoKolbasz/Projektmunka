@@ -1,16 +1,31 @@
-Bár az elektronikusan közölt információk típusa (pl.: rekeszátmérő) nagyban ismert, hogy pontosan melyik elektronikus kontakt, pontosan milyen módon közli az információt, ismeretlen. Így mind a Z-bajonett mind az F-bajonett elektronikus kommunikációja egy fekete dobozhoz hasonlítható. Ennek a rendszernek a feltárására célszerű megközelítés visszafejtéses módszereket alkalmazni. "A visszafejtés itt úgy van definiálva, mint egy bizonyos hardverhez készült specifikációk létrehozása valaki olyan által, aki nem tartozik az eredeti dizájnerek közé, elsősorban egy egyed vagy egyedek gyűjteményének analizálására vagy dimienziózására alapozva."\cite{Reverse_engineering}
-\subsection{Elemek azonosítása}
-Első lépésként a konkrét kontaktok által szállított információk jelentéseit kell meghatározni. Ehhez először rögzítenünk kell a kontaktok különböző bemenetére adott reakcióját. Így miközben egy objektív csatlakoztatva van, méréseket végzünk a kapcsolaton. Ezt az alábbi (\ref{fig:jelparosito_UML}) diagrammon látható rendszerrel valósíthatjuk meg. Itt a jel leírásánál fel kell tüntetni az áramerősséget és a feszültséget is, mivel mindkettő tartalmazhat szükséges információt.
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1.0\linewidth]{img/Reverse_2.drawio.png}
-	\caption{Nikon F (bal) és Nikon z (bal) objektívfoglalatok belső átmérője közti különbség}
-	SCRAP THIS / MAKE IT REFLECT THE ACTUAL THING IN SECTION \ref{sec:naplozas}
-	\label{fig:jelparosito_UML}
-\end{figure}
+Bár az elektronikusan közölt információk típusa (pl.: rekeszátmérő) nagyban ismert, hogy pontosan melyik elektronikus kontakt, pontosan milyen módon közli az információt, többnyire ismeretlen.
+\subsection{Nikon F csatlakozás}
+Az F csatlakozáshoz elérhető közösségi információ önmagában nem megbízható, ezért annak valósságát szükséges megerősíteni.
+\subsubsection{Ellenőrzés kontroller implementációval}
+Abból a feltételezésből kiindulva, hogy az információ helyes, egy kontroller implementáció készül.
+Ha ennek használata közben az objektív az elvárt módon viselkedik, akkor az információ helyes.
+Hátránya, hogy amennyiben nem helyes az információ, az eszközök károsulhatnak.
+\subsubsection{Ellenőrzés kutatási folyamat megismétlésével}
+Amennyiben közösségi kísérletek megismétlése során ugyan azok az eredmények érkeznek be, az információ helyes volt.
+Ezen felül elvégezhetőek rajta a Z interfészhez ismertetett eljárások is.
+Hátránya, hogy hosszadalmas és nem sokkal gyorsabb, mintha teljes információhiány lenne a kiindulási pont.
+
+\subsection{Nikon Z csatlakozás}
+Az F csatlakozással szemben a Z csatlakozás elektronikájáról kizárólak feltételezések nyílvánosal.
+Ennek értelmében egyfajta fekete doboznak minősül.
+%Ennek a rendszernek a feltárására célszerű megközelítés visszafejtéses módszereket alkalmazni. "A visszafejtés itt úgy van definiálva, mint egy bizonyos hardverhez készült specifikációk létrehozása valaki olyan által, aki nem tartozik az eredeti dizájnerek közé, elsősorban egy egyed vagy egyedek gyűjteményének analizálására vagy dimienziózására alapozva."\cite{Reverse_engineering}
+%\subsection{Kontaktok szerepeinek azonosítása}
+\label{z_elemzes}
+Első lépésként a konkrét kontaktok által szállított információk jelentéseit kell meghatározni.
+Ehhez először rögzítenünk kell a kontaktok különböző bemenetére adott reakcióját.
+Így miközben egy objektív csatlakoztatva van, méréseket végzünk a kapcsolaton.
 Fontos a bemeneti és a kimeneti (jelek a kontaktokon) változásokat összepárósítani, mivel így a bemenetek alapján rendezve könnyebben meghatározható, hogy mely adatokért mely csatornák felelnek.
-\subsubsection{Rögzítőberendezés}
-A rögzítőberendezés nem feltétlenül képes minden kontaktot egyszerre felügyelni. Ilyenkor ugyanazokkal a beállításokkal meg kell ismételni a tesztet addig, amíg nem lesz tesztelve az összes kontakt az adott beállítással. Az objektív és a kameratest közé nem juthat be fény, ezért keskeny, alacsony feszültségű kábelekkel kell kivezetni a jeleket a csatlakozások belsejéből. Annak érdekében, hogy az objektív és a kamera ne sérüljön, célszerű egy olcsó makró toldógyűrűt beiktatni a kettő közé, és abba kialakítani a réseket, amiken keresztül a jelet ki lehet vinni a szerkezetből. Miután az eszköz elvégezte a méréseket a jelet továbbítani kell az objektívnek, hogy annak (ha van) válasza is rögzülhessen.
+Ezek a dolgozatban később részletesebben is ismertetve lesznek.
+\subsubsection{Adatrögzítés}
+A rögzítőberendezés nem feltétlenül képes minden kontaktot egyszerre felügyelni.
+Ilyenkor ugyanazokkal a beállításokkal meg kell ismételni a tesztet addig, amíg nem lesz tesztelve az összes kontakt az adott beállítással.
+A mérőeszköz párhuzamosan van rákötve az adatkapcsolatra annak érdekében, hogy a kommunikáció zavartalanul menjen végbe.
+A használt mérőberendezés a \ref{sec:mero_berendezes}-os szekcióban, az adatrögzítés a \ref{sec:naplozas}-es szekcióban kerül bővebb kifejtésre.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\linewidth]{img/rajz.png}
@@ -19,7 +34,7 @@ A rögzítőberendezés nem feltétlenül képes minden kontaktot egyszerre fel�
 	\label{fig:rogzito}
 \end{figure}
 \subsubsection{Mintavételezés}
-A mintavételezésnek nem sokkal a beállítás megváltozása elött kell kezdődnie, és a jel végeztével le kell állnia. Ezzel látványosan lehet szemléltetni az értékváltozást, és kinyerhetővé válik a jelváltozás szükséges sebessége, valamint a rögzítés megfelelően időzített leállításával elkerülhető a fölösleges feljegyzések generálása, ezzel csökkentve az adatfeldolgozással töltött időt.
+A mintavételezésnek nem sokkal a beállítás megváltozása előtt kell kezdődnie, és a jel végeztével le kell állnia. Ezzel látványosan lehet szemléltetni az értékváltozást, és kinyerhetővé válik a jelváltozás szükséges sebessége, valamint a rögzítés megfelelően időzített leállításával elkerülhető a fölösleges feljegyzések generálása, ezzel csökkentve az adatfeldolgozással töltött időt.
 \paragraph{Mintavételezési gyakoriság}
 Mivel a jelet rögzítésnél az analízis érdekében analógként kezeljük (nem digitális 1 eseket és nullákat rögzítünk, hanem az elektromos jel fentebb említett tulajdonságainak értékeit rögzítjük), de digitálisan tároljuk, ezért meghatározott időközönként kell mintavételezést végeznünk. Ennek a gyakoriságát a Nyquist-Shannon mintavételezési elmélet alapján határozzuk meg. "A Nyquist elmélet leírja, hogy hogyan lehet mintavételezni egy hullámból úgy, hogy ne vesszen el információ."\cite{por2019nyquist} Eszerint a mintavételezési gyakoriságnak a jel legnagyobb lehetséges frekvenciájának kétszeresének kell lennie (\ref{eq:Nyguist})\cite{por2019nyquist}.
 

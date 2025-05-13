@@ -1,4 +1,6 @@
-\[insert def here\]
+"A megszakítás egy aszinkron jelzés (pl. gomblenyomás) a processzor felé (Interrupt Request: IRQ), hogy valamely hardver elem beavatkozást igényel.
+Hatására a processzor megszakítja a program futtatását, eltárolja az állapotát, és lefuttatja a megszakítást kezelő programrészt (interrupt handling routine), amely a megszakítás címén tálalható (interrupt vector).
+Végül visszatér az eltárolt állapotba és folytatja a futtatást."\cite{aradi2020jarmuvedezeti}
 \subsection{Megszakítások engedélyezése}
 % avr_device::interrupt::enable
 Megszakítások használatához először azok bekapcsolása szükséges. Ha a megszakítások nincsenek bekapcsolva, akkor a megszakításokhoz rendelt függvények nem kerülnek meghívásra.

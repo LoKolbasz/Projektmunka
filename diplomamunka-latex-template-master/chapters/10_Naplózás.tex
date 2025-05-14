@@ -98,11 +98,12 @@ Ezáltal korreálhatóvá válnak a mért adatok a vizsgált tevékenységgel.
 \subsubsection{Gombnyomás érzékelése}
 A gomb egy külső nyomtatott áramkör (NYÁK) próbapanel használatával kerül bekötésre.
 Erre azért van szükség, mert az Arduino egyetlen beépített gombja a program teljes újraindítására szolgál.
-\begin{figure}[H]
-    \label{fig: gombkotes}
-    ERROR: Missing figure
-    \caption{Gomb bekötése}
-\end{figure}
+% \begin{figure}[H]
+%     \label{fig: gombkotes}
+%     ERROR: Missing figure
+%     \caption{Gomb bekötése}
+% \end{figure}
+
 A gomb lenyomását a program az általános célú be-, kimeneti (GPIO) tűn érzékeli.
 Ha a beolvasott érték "logikai alacsony", akkor a gomb le van nyomva, ha az érték "logikai magas", akkor a gomb nincs lenyomva.
 Hibalehetőségek csökkentése céljából az adatküldés a gomb lenyomása utáni felengédéskor indul el,

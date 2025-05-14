@@ -1,6 +1,6 @@
 "A zaj egy kéretlen jelek egy típusa.[...] Az adatgyűjtési folyamat során a zaj a jelekben perzisztens.[...] 
 Még az analóg-digitális átalakítás is zajt ad az átalakított jelhez. 
-A konverter minőségétől és a jel felhasználásától függően ennek jalantős hatással lehet."\cite{noise_reduction_omp}
+A konverter minőségétől és a jel felhasználásától függően ennek jelentős hatással lehet."\cite{noise_reduction_omp}
 Annak érdekében, hogy egyszerűbb legyen egyezéseket találni az analóg bemenetek, és az azokhoz eltárolt minták között.
 Ezek a szűrők az elemzési fázisban is jól használhatóak, így könnyebb automatizált eszközökkel mintákat találni a jelekben.
 
@@ -8,8 +8,8 @@ Ezek a szűrők az elemzési fázisban is jól használhatóak, így könnyebb a
 "Tipikus forrásai a magas frekvenciájú zajnak, amely hatással van az áramkörökre és elektronikus rendszerekre: digitális logika, kapcsoló tápegységek, elektrosztatikus kisülések, motorok és relék, [...]. 
 A digitális zaj valósszínűleg a legelterjettebb zajforrás az elektronikus rendszerekben."\cite{smith1992high}
 Az Arduino Mega 2560 az ADC pontosságának növeléséhez nyújt egy "ADC Noise Reduction" alvási módot \cite{arduino_at_mega_datasheet}. 
-"Az ADC képes Alvó módban üzemelni, de ehhez az ADC-nek a dedikált ADCRC-r kell használnija órajel forrásként. 
-Amikor az ADCRC van kiválasztva órajel forrásként, az ADC hardver vár még egy instrukciós ciklust ($T_{CY}$) mielött megkezdi a konverziót. 
+"Az ADC képes Alvó módban üzemelni, de ehhez az ADC-nek a dedikált ADCRC-r kell használnia órajel forrásként. 
+Amikor az ADCRC van kiválasztva órajel forrásként, az ADC hardver vár még egy instrukciós ciklust ($T_{CY}$) mielőtt megkezdi a konverziót. 
 Ez megengedi, hogy a SLEEP instrukció végre legyen hajtva, amely csökkentheti a rendszerzajt a konverziós folyamat során."\cite{ATmega_processor_datasheet}
 
 \subsection{Zajcsökkentés DCT és DSC szótárakon alapú OMP algoritmussal} \label{OMP}
@@ -21,7 +21,7 @@ A ritka reprezentáció a következő lineáris kombinációval képes a jelet r
 ahol $x[n]$ egy $x \in \mathbb{R}^{N \times 1}$ jel n-edik mintája, $D[n,m]$ az n-edik mintája az m-edik oszlopnak (atom) egy $D \in \mathbb{R}^{N \times M}$, $a[m]$ az m-edik együtthatója egy $a \in \mathbb{R}^{M \times 1}$ritka vektornak (van nem 0 eleme) és $r[n]$ az n-edik mintája a visszamaradó $r \in \mathbb{R}^{N \times 1}$ reprezentációnak.\cite{noise_reduction_omp}
 
 \paragraph*{OMP(ortogonális egyezésre törekvés) algoritmus}
-"Egy mohó algoritmus, amely használható jelvisszaállításra hiányis együtthatókból tömörített érzékelésnél."\cite{noise_reduction_omp} Esetünkben a jel dekompozíciójára használjuk.
+"Egy mohó algoritmus, amely használható jelvisszaállításra hiányos együtthatókból tömörített érzékelésnél."\cite{noise_reduction_omp} Esetünkben a jel dekompozíciójára használjuk.
 
 % \begin{algorithm}
 %     \caption{OMP}\label{alg:cap}
@@ -49,8 +49,8 @@ ahol $x[n]$ egy $x \in \mathbb{R}^{N \times 1}$ jel n-edik mintája, $D[n,m]$ az
 % $\tilde{D}$: Atomok részmátrixa.
 A ritka reprezentáció megtartása érdekében $M > N$ nek igaznak kell lennie és a szótárban legalább $N + 1$ atomank kell lennie.
 A diszkrét fourier függvény complex része elkerülése érdekében a DCT és a DST algoritmusokat használjuk. Ezek eredményéiből jön létre a szótár: \[D = [C|S]\]
-A koszinuszok a DCT-II transformáció alapján: \[C[n, k] = \beta_c \cos[\frac{\pi k (2n + 1)}{2N}]\]
-A szinuszok a DST-II transformáció alapján: \[C[n, k] = \beta_s \sin[\frac{\pi (k + 1) (2n + 1)}{2N}]\]
+A koszinuszok a DCT-II transzformáció alapján: \[C[n, k] = \beta_c \cos[\frac{\pi k (2n + 1)}{2N}]\]
+A szinuszok a DST-II transzformáció alapján: \[C[n, k] = \beta_s \sin[\frac{\pi (k + 1) (2n + 1)}{2N}]\]
 Ahol 
 \begin{equation}
     \beta_c =
@@ -70,7 +70,7 @@ $n = {0, 1,..., N - 1}$, $k = {0, 1,..., N - 1}$ és $N$ a jelminták száma. Ez
 \begin{equation}
     x[n] = \sum_{p=1}^N C[n,p]\alpha_c[p] + \sum_{q=1}^N S[n,q]\alpha_s[q] + r[n]
 \end{equation}
-Ahol $\alpha_c \in \mathbb{R}^{N \times 1}$ a koszinuszok, $\alpha_s \mathbb{R}^{N \times 1}$ pedig a szinuszok együttahtói amik a $C \in \mathbb{R}^{N \times N}$ és a $S \in \mathbb{R}^{N \times N}$ mátrixokhoz tartoznak. A szótárban $2N$ atom lesz.\cite{noise_reduction_omp}
+Ahol $\alpha_c \in \mathbb{R}^{N \times 1}$ a koszinuszok, $\alpha_s \mathbb{R}^{N \times 1}$ pedig a szinuszok együtthatói amik a $C \in \mathbb{R}^{N \times N}$ és a $S \in \mathbb{R}^{N \times N}$ mátrixokhoz tartoznak. A szótárban $2N$ atom lesz.\cite{noise_reduction_omp}
 \\
 \begin{algorithm}
     \caption{OMP zajcsökkentés}\label{alg:cap}
@@ -93,7 +93,7 @@ Ahol $\alpha_c \in \mathbb{R}^{N \times 1}$ a koszinuszok, $\alpha_s \mathbb{R}^
 Ahol: \\
 $x$: dekompozálandó jel. \\
 $S$: Szinusz komponensek. \\
-$C$: Coszinusz komponensek. \\
+$C$: Koszinusz komponensek. \\
 $D$: Szótár, amely a $[C|S]$ mátrixból áll. C és S elemeknek párban kell lenniük (ugyan akkora az elemszámuk).\\
 $STOP_CONDITION$: Leállási feltétel. \\
 $r_j$: Visszamaradó jel a j-edik iterációnál.(Inicializálásnál ($r_0$) az eredeti jel, ekkor $D_0$ és $U_0$ is üres). \\
@@ -107,4 +107,6 @@ Ennek alapján akkor állítjuk le az iterációt, ha a az algoritmus energiaszi
 \begin{equation}
     E_m = \sqrt{\frac{\alpha_m^2 + \alpha_{N + m}^2}{2N}}
 \end{equation}
-Az $E_min$ értéke fehér zaj esetén meghatározható annak a konstans teljesítményspektrum sűrűsége miatt. Viszont a módszer miatt az energiaszint elérheti a minimumot, de a megoldás még hullámzik. Ennek elkerülése érdekében, csak akkor érjen véget a ciklus, ha legalább már kettő egymás utáni megoldás energiaszintje a határérték alatt van.\cite{noise_reduction_omp}
+Az $E_min$ értéke fehér zaj esetén meghatározható annak a konstans teljesítményspektrum sűrűsége miatt.
+Viszont a módszer miatt az energiaszint elérheti a minimumot, de a megoldás még hullámzik.
+Ennek elkerülése érdekében, csak akkor érjen véget a ciklus, ha legalább már kettő egymás utáni megoldás energiaszintje a határérték alatt van.\cite{noise_reduction_omp}
